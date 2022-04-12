@@ -1,0 +1,22 @@
+{% extends 'admin_panel/base_admin.html'%}
+
+{% block content%}
+<div class="card" style="width: 28rem;">
+    
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">First name: {{eachUser.first_name}}</li>
+      <li class="list-group-item">Last name: {{eachUser.last_name}}</li>
+      <li class="list-group-item">Email: {{eachUser.email}}</li>
+      <li class="list-group-item">user name: {{eachUser.user_name}}</li>
+      <li class="list-group-item">Is admin: {{eachUser.is_admin}}</li>
+      <li class="list-group-item">Is staff: {{eachUser.is_staff}}</li>
+      <li class="list-group-item">Is active: {{eachUser.is_active}}</li>
+      <li class="list-group-item">Is superadmin: {{eachUser.is_superadmin}}</li>
+      <li class="list-group-item">Last login: {{eachUser.last_login}}</li>
+      <li class="list-group-item">Date joined: {{eachUser.date_joined}}</li>
+
+    </ul>
+  </div>
+
+  
+{% endblock%}

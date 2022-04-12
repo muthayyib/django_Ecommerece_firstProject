@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="py-3 bg-primary">
+    <div class="container">
+        <a href="{% url 'home' %}" class="text-white">Home/</a>
+        <a href="{% url 'collections' %}" class="text-white">Collections/</a>
+        <a href="{% url 'collectionsview' category.category_slug %}" class="text-white">{{category.category_name}}/</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{categoryname.category_name}}</h1>
+            <div class="row">
+                {% for item in product%}
+                <div class="col-md-4">
+                    <div class="card">
+                        <a href="#"></a>
+                        <div class="card-body">
+                            <div class="category-image">
+                                <img src="{{item.images.url}}" height='200px' class ='w-100' alt="">
+                            </div>
+                            <h4 class='text-center'>{{item.product_name}}</h4>
+                            <span class='float-start'>{{item.price | stringformat:'d' }}</span>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}

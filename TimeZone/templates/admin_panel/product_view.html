@@ -1,0 +1,82 @@
+{% extends 'admin_panel/base_admin.html'%}
+{% block content%}
+<!-- Table Start -->
+
+
+ <div class="container-fluid pt-4 px-4">
+
+{% for msg in messages%}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{msg}}</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+   <div class="row g-4">
+       <div class="col-12">
+           <div class="bg-light rounded h-100 p-4">
+            
+            <a href="{% url 'add_product' %}"><button type="button" class="btn btn-info m-2 "  >Add product</button></a>
+               <div class="table-responsive">
+                   <table class="table">
+                       <thead>
+                           <tr>
+                               <th scope="col">#</th>
+                               <th scope="col">Image</th>
+                               <th scope="col">Product name</th>
+                               <th scope="col">Category</th>
+                               <th scope="col">Price</th>
+                               <th scope="col">stock</th>
+                               <th scope="col">Modified date</th>
+                               <th scope="col">Edit</th>
+                               <th scope="col">Delete</th>
+                           </tr>
+                       </thead>
+                       {% for product in product_list%}
+                       <tbody>
+                           <tr>
+                               <th scope="row">{{product.id}}</th>
+                               <td> <img width=30rem src="{{product.images.url}}" alt=""></td>
+                               <td>{{product.product_name}}</td>
+                               <td>{{product.category}}</td>
+                               <td>{{product.price}}</td>
+                               <td>{{product.stock}}</td>
+                               <td>{{product.modified_date}}</td>
+                               <td><a href="/newadmin/edit_product/{{product.id}}"><i class="fas fa-edit"></i></a></td>
+                               <td><a   data-bs-toggle="modal" data-bs-target="#product-{{product.id}}"><i class="fas fa-trash"></i></a></td>
+                               
+                           <!-- Modal -->
+                           <div class="modal fade" id="product-{{product.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                             <div class="modal-dialog">
+                               <div class="modal-content">
+                                 <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                 </div>
+                                 <div class="modal-body">
+                                   <p>Do you really want to delete {{product.product_name}}</p>
+                                 </div>
+                                 <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                   
+                                   <a href="{% url 'delete_product' product.id%}"><button  type="button" class="btn btn-primary">Confirm</button></a>
+                                 </div>
+                               </div>
+                             </div>
+                             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+                           </div>
+
+                           </tr>
+                           
+                       </tbody>
+                       {% endfor %}
+                   </table>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+<!-- Table End -->
+
+{% endblock%}

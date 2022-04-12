@@ -1,0 +1,265 @@
+
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+        .gallery-wrap .img-big-wrap img {
+            height: 400px;
+            width: 400px;
+           /* width: auto;*/
+            display: inline-block;
+            cursor: zoom-in;
+        }
+        
+        
+        .gallery-wrap .img-small-wrap .item-gallery {
+            width: 70px;
+            height: auto;
+            margin: 7px 2px;
+            display: inline-block;
+            overflow: hidden;
+        }
+        
+        .gallery-wrap .img-small-wrap {
+            text-align: center;
+        }
+        .gallery-wrap .img-small-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            /*cursor: zoom-in;*/
+        }
+        .price-title{
+            font-weight: 700;
+        }
+        .price{
+            font-size: 24px;
+            line-height: 31px;
+            text-transform: uppercase;
+            max-height: 66px;
+            overflow: hidden;
+            font-family: 'Open Sans',Arial,sans-serif;
+            font-weight: 700;
+            width: 100%;
+            padding: 0;
+            float: none;
+        
+        
+        }
+        .color-price-waanbii{
+            color: #FA3A11; 
+        }
+        .color-box-waanbii{
+            background: #FD6342; 
+            color:white;
+        }
+        
+        .fa-beat {
+          animation:fa-beat 5s ease infinite;
+        }
+        @keyframes fa-beat {
+          0% {
+            transform:scale(1);
+          }
+          5% {
+            transform:scale(1.25);
+          }
+          20% {
+            transform:scale(1);
+          }
+          30% {
+            transform:scale(1);
+          }
+          35% {
+            transform:scale(1.25);
+          }
+          50% {
+            transform:scale(1);
+          }
+          55% {
+            transform:scale(1.25);
+          }
+          70% {
+            transform:scale(1);
+          }
+        }
+        
+        
+        .zoom:hover {
+          transform: scale(2); 
+        }
+
+/* zoom css */
+        #preview{
+          margin-top: -450px;
+          border:1px solid black;
+          width:500px;
+          height:500px;
+          background-repeat: no-repeat;
+          margin-left: 400px;
+          margin-right: auto;
+        }
+        #samples{
+          text-align: center;
+        }
+        #samples img {	
+          margin: 10px;
+          display: block;
+           border: 2px solid #6A6462;
+        }
+        #samples img:hover {
+           cursor: zoom-in;
+           border: 0;
+           -moz-box-shadow:2px 2px 7px 2px rgba(130,130,130,1),-1px -1px 7px 2px rgba(130,130,130,1);
+          -webkit-box-shadow: 2px 2px 7px 2px rgba(130,130,130,.7),-1px -1px 7px 2px rgba(130,130,130,1);
+          box-shadow: 2px 2px 7px 2px rgba(130,130,130,.7),-2px -2px 7px 2px rgba(130,130,130,1);
+        }
+        @media screen and (max-width: 767px){
+          #samples img {
+            display: inline-block;
+          }
+        }
+        </style>
+        
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script> function zoomIn(event) {
+  var pre = document.getElementById("preview");
+  pre.style.visibility = "visible";
+  if ($('#zoom1').is(':hover')) {
+        var img = document.getElementById("zoom1");
+		pre.style.backgroundImage = "url('{{product.images1.url}}')";
+    }
+
+  var posX = event.offsetX;
+  var posY = event.offsetY;
+  pre.style.backgroundPosition=(-posX*2.5)+"px "+(-posY*5.5)+"px";
+
+}
+
+function zoomOut() {
+  var pre = document.getElementById("preview");
+  pre.style.visibility = "hidden";
+}</script>
+<!------ Include the above in your HEAD tag ---------->
+
+</head>
+<body>
+    {% include "includes/navbar.html" %}
+
+
+
+
+<div class="container">
+    <br>
+<div class="card border-0">
+	<div class="row">
+		<aside class="col-sm-4">
+<article class="gallery-wrap"> 
+<div class="img-big-wrap">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" id="samples">
+        <img id="zoom1" width="100x" height="200px" onmousemove="zoomIn(event)" onmouseout="zoomOut()" src="{{product.images1.url}}">
+      </div>
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+        <div id="preview" onmousemove="zoomIn(event)"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} zoom
+ {% endcomment %}
+ 
+ {% comment %} zoom {% endcomment %}
+<div class="img-small-wrap">
+  <div class="item-gallery zoom"> <a href="{{product.images1.url}}" class="MagicZoom"><img src="{{product.images2.url}}" /></a> </div>
+<div class="item-gallery"> <img src="{{product.images2.url}}"> </div>
+<div class="item-gallery"> <img src="{{product.images3.url}}"> </div>
+<div class="item-gallery"> <img src="{{product.images4.url}}"> </div>
+</div>
+</article>
+		</aside>
+		<aside class="col-sm-5">
+<article class="card-body m-0 pt-0 pl-5">
+	<h3 class="title text-uppercase">{{product.product_name}}</h3>
+<div class="rating">
+							<div class="stars">
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star"></span>
+								<span class="fa fa-star"></span>
+								<span class="review-no ml-2">(41 reviews)</span>
+							</div>
+						</div>
+<div class="mb-3 mt-3"> 
+		<span class="h7 text-success">stock.{{product.is_available}}</span>
+</div>						
+<div class="mb-3 mt-3"> 
+    <span class="price-title">Price :</span>
+		<span class="price color-price-waanbii">{{product.price}}</span>
+</div>
+<dl class="item-property">
+  <dt>Description</dt>
+  <dd><p>{{product.description}}</p></dd>
+</dl>
+<dl class="param param-feature">
+  <dt></dt>
+  <dd>Category: {{product.category}}</dd>
+</dl>
+</article>
+		</aside>
+		<aside class="col-sm-3">
+		    	<div class="row">
+			<dl class="param param-inline">
+			  <dt>Quantity: </dt>
+			  <dd>
+			  	<select class="form-control form-control-sm" style="width:70px;">
+			  		<option> 1 </option>
+			  		<option> 2 </option>
+			  		<option> 3 </option>
+		  			<option> 4 </option>
+			  		<option> 5 </option>
+			  		<option> 6 </option>
+			  		<option> 7 </option>
+			  		<option> 8 </option>
+			  		<option> 9 </option>
+		  			<option> 10 </option>
+			  	</select>
+			  </dd>
+			</dl>
+	</div>
+		<div class="row ">
+	<button class="btn btn-lg color-box-waanbii" type="button"> <i class="fa fa-shopping-cart"></i> Add to cart</button>
+	</div>
+			<div class="row mb-4 mt-4">
+	<button class="btn btn-lg color-box-waanbii" type="button"> <i class="fa fa-credit-card"></i> Buy now</button>
+	</div>
+		<div class="row mb-4 mt-4">
+	<button class="btn btn-lg btn-success" type="button"><i class="fa fa-heart fa-beat"></i></button>
+		    </div>
+<hr class="m-0 p-0">
+	<div class="row mb-4 mt-4">
+
+		    </div>
+		</aside>
+	</div>
+</div>
+
+
+</div>
+<!--container.//-->
+</body>
+</html>
