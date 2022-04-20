@@ -15,11 +15,6 @@ def store(request):
     }
     return render (request,'store.html',context)
 
-#product deatiled view for user
-def productDetails(request,id):
-    product = Product.objects.get(id=id)
-    context = {'product':product}
-    return render(request, 'product_details.html',context)
 
 # product view based on category 
 def collections(request):
@@ -42,3 +37,19 @@ def collectionsview(request,category_slug):
     else:
         messages.warning(request,'No match found')
         return redirect('collections')
+
+#product deatiled view for user
+def productDetails(request,cat_slug,prod_slug):
+    if(Category.objects.filter(category_slug=cat_slug,status=0)):
+        if(Product.objects.filter(product_slug=prod_slug,status=0)):
+            product = Product.objects.filter(product_slug=prod_slug,status=0).first()
+            context = {'product':product}
+    
+        else:
+            messages.error(request,'No such products')
+            return redirect('collections')
+
+    else:
+        messages.error(request,'No such category')
+        return redirect('collections')
+    return render(request, 'store/view_pro.html',context)

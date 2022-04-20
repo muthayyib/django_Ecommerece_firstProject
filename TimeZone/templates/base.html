@@ -41,7 +41,7 @@
     {% include 'includes/navbar.html'  %}
     
     {% block content%}
-        {% comment %} main contents here {% endcomment %}
+      
     {% endblock %}
     <footer>
         <!-- Footer Start-->
@@ -140,6 +140,11 @@
     <!-- Search model end -->
 
     <!-- JS here -->
+
+    <!-- custom for increment product number -->
+    <script src="{% static '/js/quantity_inc.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 
     <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
     <!-- Jquery, Popper, Bootstrap -->

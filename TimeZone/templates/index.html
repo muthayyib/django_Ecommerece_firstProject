@@ -74,7 +74,7 @@
                 </div>
                 
                     {% for product in products %}
-                    <div class="row"> <a href="{% url 'product_details' product.id %} ">
+                    <div class="row"> <a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-new-pro mb-30 text-center">
                             <div class="product-img">

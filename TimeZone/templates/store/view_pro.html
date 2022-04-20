@@ -1,0 +1,80 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content%}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<div class="py-3 bg-primary">
+    <div class="container">
+        <a href="{% url 'home' %}" class="text-white">Home/</a>
+        <a href="{% url 'collections' %}" class="text-white">Collections/</a>
+        <a href="{% url 'collectionsview' product.category.category_slug %}" class="text-white">{{product.category.category_name}}/</a>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-13">
+                <div class="card shadow product-data">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                {% if product.tag%}
+                                <label for="" class="product-viewtag">{{product.tag}}</label>
+                                {% endif %}
+                                <img src="{{product.images.url}}" alt="" class="w-100">
+                            </div>
+                            <div class="col-md-8">
+                                <h2 class="mb-0">{{product.product_name}}
+                                {% if product.trending%}
+                                <label for="" class="float-end badge bd-danger trendign_tag"></label>
+                                {% endif %}
+                                </h2>
+                                <hr>
+                                <label for="" class="fw-bold">Price Rs:{{product.price}}</label>
+                                <p class="mt-3">
+                                    small descriptions
+                                </p>
+                                <hr>
+                                {% if product.stock > 0 %}
+                                <label for="" class="bagde bg-success">In stock</label>
+                                {% else%}
+                                <label for="" class="bagde bg-danger">Out of stock</label>
+                                {% endif%}
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <label for="Quantity">Quantity</label>
+                                        <div class="input-group text-center mb-3" style="width: 130px;">
+                                            <button class="input-group-text decrement-btn">-</button>
+                                            <input type="text" name='quantity' class="form-control text-center qt-input" value="1" name="quantity">
+                                            <button class="input-group-text increment-btn">+</button>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <br/>
+                                            {% if product.stock > 0 %}
+                                            <a class="btn btn-primary me-3 float-start" href='{% url 'add_cart' product.id%}' >Add to cart</a>
+                                            {% endif%}
+                                            <button class="btn btn-success me-3 float-start"> Wish</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                                <h3>Description</h3>
+                                <p class="mt-3">{{product.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static '/js/quantity_inc.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+{%endblock%}

@@ -2,6 +2,7 @@
 from django.contrib import messages
 from this import d
 from django.shortcuts import redirect, render
+import requests
 from .models import Account
 from . form import RegisterForm
 from django.contrib.auth import authenticate,login,logout
@@ -9,7 +10,8 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 import random
 from twilio.rest import Client
-
+from cart.models import Cart,CartItem
+from cart.views import _cart_id
 
 
 # Create your views here.
@@ -47,9 +49,28 @@ def login(request):
         password = request.POST['password']
         user = authenticate(request,email=email,password=password)
         if user is not None:
+            try:
+                print('try')
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                is_cart_item_exist = CartItem.objects.filter(cart=cart).exists()
+                if is_cart_item_exist :
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    for item in cart_item:
+                        item.user = user
+                        item.save()
+            except:
+                pass
             auth.login(request,user)
-            messages.success(request,'You are logged in succussfully')
-            return redirect('/')
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+            except:
+                messages.success(request,'You are logged in succussfully')
+                return redirect('/')
             # return render(request,'index.html')
         else:
             messages.error(request,'Invalid credentials')

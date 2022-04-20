@@ -17,14 +17,14 @@
                 {% for item in product%}
                 <div class="col-md-4">
                     <div class="card">
-                        <a href="#"></a>
+                        <a href="{% url 'product_details' item.category.category_slug item.product_slug%}">
                         <div class="card-body">
                             <div class="category-image">
                                 <img src="{{item.images.url}}" height='200px' class ='w-100' alt="">
                             </div>
                             <h4 class='text-center'>{{item.product_name}}</h4>
                             <span class='float-start'>{{item.price | stringformat:'d' }}</span>
-                        </div>
+                        </div></a>
                     </div>
 
                 </div>
