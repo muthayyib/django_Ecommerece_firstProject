@@ -59,7 +59,7 @@
                 </td>
                 <td><a class="btn btn-primary" href="{% url 'delete_item' cart_item.product.id %}" role="button">Remove</a></td>
                 <td>
-                  <h5>{{total}}</h5>
+                  <h5>{{cart_item.item_total}}</h5>
                 </td>
               </tr>
               {% endfor %}
@@ -82,7 +82,7 @@
                   <h5>Subtotal</h5>
                 </td>
                 <td>
-                  <h5>$2160.00</h5>
+                  <h5>{{sub_total}}</h5>
                 </td>
               </tr>
               <tr class="shipping_area">

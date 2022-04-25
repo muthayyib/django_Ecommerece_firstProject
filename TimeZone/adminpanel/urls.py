@@ -36,5 +36,8 @@ urlpatterns = [
     path('add_category',views.add_category,name="add_category"),
     path('edit_category/<int:id>',views.edit_category,name='edit_category'),
     path('delete_category/<int:id>',views.delete_category,name='delete_category'),
+    path('order_manage/', views.order_manage,name='order_manage'),
+    path('order_cancel/<int:order_number>',views.order_cancel,name='order_cancel'),
+    path('change_status/<int:order_number>',views.change_status,name='change_status'),  
     
 ]

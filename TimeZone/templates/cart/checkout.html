@@ -66,7 +66,7 @@
                 <li>
                   <a href="#">{{cart_item.product.product_name}}
                     <span class="middle">x {{cart_item.quantity}}</span>
-                    <span class="last">{{total}}.00</span>
+                    <span class="last">{{cart_item.item_total}}.00</span>
                   </a>
                 </li>
                 {% endfor%}
@@ -74,17 +74,17 @@
               <ul class="list list_2">
                 <li>
                   <a href="#">Subtotal
-                    <span>$2160.00</span>
+                    <span>{{sub_total}}.00</span>
                   </a>
                 </li>
                 <li>
                   <a href="#">Shipping
-                    <span>Flat rate: $50.00</span>
+                    <span>50.00</span>
                   </a>
                 </li>
                 <li>
                   <a href="#">Total
-                    <span>$2210.00</span>
+                    <span>{{grand_total}}</span>
                   </a>
                 </li>
               </ul>
@@ -117,7 +117,10 @@
                 <a href="#">terms & conditions*</a>
               </div>
               
-              <button class="btn_3" type="submit">Proceed to Paypal</button>
+              <a href="{% url 'place_order' %}"></a><button class="btn_3">COD | Place Order</button> </a>
+              <div id="paypal-button-container">
+                {% comment %} paypal button load {% endcomment %}
+              </div>
             </form>
             </div>
           </div>

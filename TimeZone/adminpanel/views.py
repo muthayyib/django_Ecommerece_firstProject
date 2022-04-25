@@ -3,6 +3,7 @@ from socket import IPV6_DONTFRAG
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from pkg_resources import get_default_cache
+from adminpanel.forms import OrderEditForm
 from accounts.form import RegisterForm
 from accounts.models import Account
 from store.models import Product
@@ -12,6 +13,7 @@ from category.forms import CategoryForm
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from orders.models import Order,OrderProduct
 # Create your views here.
 
 #admin login
@@ -142,6 +144,39 @@ def delete_product(request,id):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(product_view)
- 
+
+#order mangement
+def order_manage(request):
+    orders = OrderProduct.objects.all()
+    context = {
+        'orders':orders,
+        
+    }
+    return render (request,'admin_panel/order_manage.html',context)
+
+def order_cancel(request,order_number):
+    orders = Order.objects.get(order_number=order_number)
+    orders.status ='Cancelled'
+    orders.save()
+    return redirect ('order_manage')
+
+def change_status(request,order_number):
+    orders = Order.objects.get(order_number=order_number)
+    form = OrderEditForm(instance=orders)
+    if request.method=='POST':
+        form = OrderEditForm(request.POST)
+        status = request.POST.get('status')
+        orders.status = status
+        orders.save()
+        return redirect ('order_manage')
+    context = {
+        'orders':orders,
+        'form':form
+    }
+    return render(request,'admin_panel/edit_statu.html',context)
+
+
+
+
     
     

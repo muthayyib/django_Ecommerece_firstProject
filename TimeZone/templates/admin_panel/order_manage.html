@@ -1,0 +1,62 @@
+{% extends 'admin_panel/base_admin.html'%}
+{% block content%}
+<!-- Table Start -->
+
+
+ <div class="container-fluid pt-4 px-4">
+
+{% for msg in messages%}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{msg}}</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+   <div class="row g-4">
+       <div class="col-12">
+           <div class="bg-light rounded h-100 p-4">
+            
+            
+               <div class="table-responsive">
+                   <table class="table">
+                       <thead>
+                           <tr>
+                               <th scope="col">#</th>
+                               <th scope="col">Order Id</th>
+                               <th scope="col">User</th>
+                               <th scope="col">Payment Mode</th>
+                               <th scope="col">Status</th>
+                               <th scope="col">State</th>
+                               <th scope="col">Total price</th>
+                               <th scope="col">Edit</th>
+                               <th scope="col">Cancel</th>
+                           </tr>
+                       </thead>
+                       {% for txn in orders%}
+                       <tbody>
+                           <tr>
+                               <th scope="row">{{txn.order.order_number}}</th>
+                               <th scope="row">{{txn.order.order_number}}</th>
+                               <th scope="row">{{txn.user}}</th>
+                               <td> COD </td>
+                               <td> {{txn.order.status}}</td>
+                               <td>{{txn.order.state}}</td>
+                               <td>{{txn.product_price}}</td>
+                               <td><a href="{% url 'change_status' txn.order.id %} ">edit<i class="fas fa-edit"></i></a></td>
+                               <td><a href="{% url 'order_cancel' txn.order.order_number %}">cancel<i class="fas fa-delete"></i></a></td>
+
+                            </tr>
+                           
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+ <!-- Table End -->
+ 
+ {% endblock%}
+ 

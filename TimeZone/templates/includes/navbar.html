@@ -13,32 +13,24 @@
                     <div class="main-menu d-none d-lg-block">
                         <nav>                                                
                             <ul id="navigation">  
-                                <li><a href="index.html">Home</a></li>
+                                <li><a href="/">Home</a></li>
                                 <li><a href="{% url 'store' %}">store</a></li>
-                                <li><a href="{% url 'collections' %}">Collections</a></li>
-                                <li class="hot"><a href="#">Latest</a>
+                                <li><a href="{% url 'collections' %}">Categories</a></li>
+                                <li>
+            
+                                </li>
+                              <li></li>
+                              <li></li>
+                              {% if request.user.is_authenticated%}
+
+                                <li><a href="#" class='text-primary' >Hi {{request.user.first_name}}!</a>
                                     <ul class="submenu">
-                                        <li><a href="store.html"> Product list</a></li>
-                                        <li><a href="product_details.html"> Product Details</a></li>
+                                        
+                                        <li><a href="{% url 'cart' %}">Cart</a></li>
+                                        <li><a href="{% url 'my_orders' %}">My orders</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="blog.html">Blog</a>
-                                    <ul class="submenu">
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="{% url 'register'%}">register</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                        <li><a href="confirmation.html">Confirmation</a></li>
-                                        <li><a href="checkout.html">Product Checkout</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html">Contact</a></li>
-                                <li class="text-primary">Hi {{request.user.first_name}}!</li>
+                                {% endif%}
                             </ul>
                         </nav>
                     </div>
@@ -52,7 +44,7 @@
                             </li>
                             {% if user.id is None%}
                             <li> <a href="{% url 'login' %}"><span class="flaticon-user">Login</span></a></li>
-                            
+                            <li><a href="{% url 'register'%}" class ='text-primary'>Register</a></li>
                             
                             {% else %}
                             <li> <a href="{% url 'logout' %}"><span class="flaticon-user">Logout</span></a></li>

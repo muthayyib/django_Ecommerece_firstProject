@@ -85,7 +85,7 @@ def login_otp(request):
             # Your Account SID from twilio.com/console
             account_sid = "ACae24b7b72fda67806f713a84ae269d11"
             # Your Auth Token from twilio.com/console
-            auth_token  = "6eb3d34d37f4e4fb7e6549fb26d37c8e"
+            auth_token  = "98c9ec770e77b68047cdcb010eb73c45"
 
             client = Client(account_sid, auth_token)
             global otp

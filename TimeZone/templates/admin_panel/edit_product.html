@@ -1,15 +1,83 @@
 {% extends 'admin_panel/base_admin.html'%} {% block content%}
 
 
-
-<form action="{% url 'edit_product' product.id %}" method="POST" class="col-lg-6" enctype="multipart/form-data">
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+<form action="{% url 'edit_product' product.id %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-control row " width='1rem'>
     {{form}}
   </div>
   <button type="submit" class="btn btn-warning" >save</button>
 </form>
+</div>
+
+<div class="" style="height: 100px; width:100px; margin-top: 30em;">
+  <img id="image_1" class="invisible" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_2" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_3" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_4" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+  <img id="image_5" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
+</div>
 
 
+  <style>
+    
+    .invisible{
+        display: none;  
+          }
+        input[type='file'] {
+          color: rgba(0, 0, 0, 0);
+          border: none;
+        
+        }
+  </style>
 
+
+<script>
+  // image 1
+
+  const image_1 = document.getElementById('id_images')
+  image_1.addEventListener('change',function(event) {
+    var image = document.getElementById('image_1');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+  });
+    //image 2
+    const image_2 = document.getElementById('id_images1')
+  image_2.addEventListener('change',function(event) {
+    var image = document.getElementById('image_2');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+    //image 3
+    const image_3 = document.getElementById('id_images2')
+  image_3.addEventListener('change',function(event) {
+    var image = document.getElementById('image_3');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+     //image 4
+     const image_4 = document.getElementById('id_images3')
+  image_4.addEventListener('change',function(event) {
+    var image = document.getElementById('image_4');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+     //image 5
+     const image_5 = document.getElementById('id_images4')
+  image_5.addEventListener('change',function(event) {
+    var image = document.getElementById('image_5');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.classList.remove('invisible')
+
+  });
+</script>
+
+</div>
+</div>
 {% endblock %}

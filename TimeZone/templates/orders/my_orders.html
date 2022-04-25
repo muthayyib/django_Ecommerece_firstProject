@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<div class="container p-3">
+    <div class="row">
+      
+            <div class="col-lg-10 p-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Ordered at</th>
+                        <th>Name of party</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders%}
+                    <tr>
+                        <td>{{order.order_number}}</td>
+                        <td>{{order.created_at}}</td>
+                        <td>{{order.first_name}}</td>
+                        <td>{{order.status}}</td>
+                        
+                        <td><a href="{% url 'order_view' order.order_number %}" class="text-primary">View</a></td>
+                        
+                    </tr>
+                    {% endfor%}  
+                </tbody>
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock%}
