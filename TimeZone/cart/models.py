@@ -2,6 +2,7 @@ from calendar import c
 from django.db import models
 from store.models import Product
 from accounts.models import Account
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -24,3 +25,16 @@ class CartItem(models.Model):
 
     def __str__(self):
         return self.product.product_name
+
+
+#model for coupons
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50,unique=True)
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+    discount = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)])
+    active = models.BooleanField()
+
+    def __str__(self):
+        return self.code 

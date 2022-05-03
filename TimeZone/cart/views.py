@@ -4,6 +4,12 @@ from django.shortcuts import get_object_or_404, redirect, render
 from store.models import Product
 from . models import Cart, CartItem
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from . models import Coupon
+from django.utils import timezone
+import pytz
+
+from .forms import CouponApplyForm
 # Create your views here.
 
 
@@ -120,16 +126,44 @@ def checkout(request, sub_total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             sub_total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
-        shipping = 50
-        grand_total = shipping + sub_total 
-     
+        shipping = 5
+        grand_total = shipping + sub_total
     except:
         pass #just ignore
-
+    coupon_apply_form = CouponApplyForm()
+    if request.session:
+        coupon_id = request.session.get('coupon_id')
+        print(coupon_id)
+        try:
+            coupon = Coupon.objects.get(id=coupon_id)
+            grand_total = shipping + sub_total-(coupon.discount/100*sub_total)
+        except:
+            pass
+        
+    else:
+        grand_total = shipping + sub_total
     context = {
         'sub_total': sub_total,
         'quantity': quantity,
         'cart_items': cart_items,
-        'grand_total':grand_total
+        'grand_total':grand_total,
+        'coupon_apply_form':coupon_apply_form,
     }
     return render (request,'cart/checkout.html',context)
+    
+def coupon_apply(request):
+    now = timezone.now()
+    
+    form = CouponApplyForm(request.POST)
+    print(now)
+    if form.is_valid():
+        
+        code = form.cleaned_data['code']
+        try:
+            coupon = Coupon.objects.get(code__iexact=code,valid_from__lte=now,valid_to__gte=now,active=True)
+            request.session['coupon_id']=coupon.id
+            return redirect('checkout')
+        except Coupon.DoesNotExist:
+            request.session['coupon_id'] = None
+            return redirect('checkout')
+

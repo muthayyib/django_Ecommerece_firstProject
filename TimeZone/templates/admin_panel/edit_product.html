@@ -1,18 +1,61 @@
 {% extends 'admin_panel/base_admin.html'%} {% block content%}
-
-
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css">
+</head>
 <div class="container">
   <div class="row">
     <div class="col-md-7">
-<form action="{% url 'edit_product' product.id %}" method="POST" enctype="multipart/form-data">
+      <div id="alert-box"></div>
+      <div id="image-box" class="mb-3" ></div>
+<form action="{% url 'edit_product' product.id %}" id="image-form" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-control row " width='1rem'>
     {{form}}
   </div>
-  <button type="submit" class="btn btn-warning" >save</button>
+  <button type="submit" class="btn btn-warning" id="confirm-btn">save</button>
 </form>
 </div>
 
+
+  <script>
+    const alertBox = document.getElementById('alert-box')
+    const imageBox = document.getElementById('image-box')
+    const imageForm = document.getElementById('image-form')
+    const confirmBtn = document.getElementById('confirm-btm')
+    const input = document.getElementById('id_images')
+    const csrf = document.getElementById('csrfmiddlewaretoken')
+
+    input.addEventListener('change', ()=>{
+      console.log('changed')
+      const img_data = input.files[0]
+      const url = URL.createObjectURL(img_data)
+      imageBox.innerHTML = '<img src="${url}" id="image" width="500px">'
+      const image = document.getElementById('image')
+      var $image = $('#image');
+
+        $image.cropper({
+          aspectRatio: 16 / 9,
+          crop: function(event) {
+            console.log(event.detail.x);
+            console.log(event.detail.y);
+            console.log(event.detail.width);
+            console.log(event.detail.height);
+            console.log(event.detail.rotate);
+            console.log(event.detail.scaleX);
+            console.log(event.detail.scaleY);
+          }
+        });
+
+// Get the Cropper.js instance after initialized
+var cropper = $image.data('cropper'); 
+
+    })
+   
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cropper/1.0.1/jquery-cropper.min.js"></script>
+  
 <div class="" style="height: 100px; width:100px; margin-top: 30em;">
   <img id="image_1" class="invisible" style="height: 100px; width:100px;" src="" alt="">
   <img id="image_2" class="invisible mt-2" style="height: 100px; width:100px;" src="" alt="">
@@ -76,7 +119,7 @@
     image.classList.remove('invisible')
 
   });
-</script>
+</script> -->
 
 </div>
 </div>

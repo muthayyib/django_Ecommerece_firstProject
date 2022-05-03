@@ -115,6 +115,13 @@ def login_otp1(request):
         return redirect(login_otp1)
     return render(request, 'login_otp1.html')
 
+def my_profile(request):
+    profile = Account.objects.get(first_name=request.user.first_name)
+    print(profile)
+    context = {
+        'profile':profile
+    }
+    return render (request,'my_profile.html',context)
 
     
 @login_required(login_url='login')

@@ -15,4 +15,5 @@ urlpatterns = [
     path('loginotp/',views.login_otp,name='login_otp'),
     path('login_otp1',views.login_otp1,name='login_otp1'),
     path('logout/',views.logout, name='logout'),
+    path('my_profile/',views.my_profile,name='my_profile'),
 ]

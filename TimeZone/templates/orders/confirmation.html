@@ -5,80 +5,26 @@
 <!--================ confirmation part start =================-->
 <section class="confirmation_part p-4">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
+      <div class="col-lg-12">
           <div class="confirmation_tittle">
-            <span>Thank you. Your order has been received.</span>
+            <span>Review Order and choose payment.</span>
           </div>
         </div>
-        <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>order info</h4>
-           
-            <ul>
-              <li>
-                <p>order number</p><span>:{{order_data.order_number}}</span>
-              </li>
-              <li>
-                <p>date</p><span>: {{order_data.updated_at}}</span>
-              </li>
-              <li>
-                <p>total</p><span>: {{total}}</span>
-              </li>
-              <li>
-                <p>mayment methord</p><span>: COD</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6 col-lx-4">
+      <div class="row">
+        <div class="col-lg-4 col-lx-4">
           <div class="single_confirmation_details">
             <h4>Billing Address</h4>
-            <ul>
-              <li>
-                <p>Street</p><span>: {{order_data.address_line1}}</span>
-              </li>
-              <li>
-                <p>city</p><span>: {{order_data.city}}</span>
-              </li>
-              <li>
-                <p>country</p><span>: {{order_data.country}}</span>
-              </li>
-              <li>
-                <p>postcode</p><span>: {{order_data.zip}}</span>
-              </li>
-            </ul>
+            {{order_data.address_line1}} <br>
+            {{order_data.city}} <br>
+            {{order_data.country}} <br>
+            {{order_data.zip}}
           </div>
         </div>
-        <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>shipping Address</h4>
-            <ul>
-              <li>
-                <p>Street</p><span>: {{order_data.address_line1}}</span>
-              </li>
-              <li>
-                <p>city</p><span>: {{order_data.city}}</span>
-              </li>
-              <li>
-                <p>country</p><span>: {{order_data.country}}</span>
-              </li>
-              <li>
-                <p>postcode</p><span>: {{order_data.zip}}</span>
-              </li>
-            </ul>
-            
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-7">
           <div class="order_details_iner">
             <h3>Order Details</h3>
             <table class="table table-borderless">
-                
               <thead>
-                 
                 <tr>
                   <th scope="col" colspan="2">Product</th>
                   <th scope="col">Quantity</th>
@@ -117,13 +63,75 @@
                
               </tfoot>
             </table>
-            
+            <div class="col-md-3">
+              <!-- Set up a container element for the button -->
+              <script src="https://www.paypal.com/sdk/js?client-id=AbZ1PMGV77_89-ap2iGwwQdK2pZ4R-A892kO9HUWd66KzB8sNJJSqTPRLqZIcMnbCa1S5SVlU9lTp1tl&currency=USD"></script>
+              <div id="paypal-button-container"></div>
+                      
+   <script>
+//      function getCookie(name) {
+//     let cookieValue = null;
+//     if (document.cookie && document.cookie !== '') {
+//         const cookies = document.cookie.split(';');
+//         for (let i = 0; i < cookies.length; i++) {
+//             const cookie = cookies[i].trim();
+//             // Does this cookie string begin with the name we want?
+//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                 break;
+//             }
+//         }
+//     }
+//     return cookieValue;
+// }
+// const csrftoken = getCookie('csrftoken');
+
+    var total = '{{ g_total | add:"5"}}'
+  
+    
+   
+    paypal.Buttons({
+      
+      // Sets up the transaction when a payment button is clicked
+      createOrder: (data, actions) => {
+        console.log(total);
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: total   // Can also reference a variable or function
+            }
+          }]
+        });
+      },
+      
+      // Finalize the transaction after payer approval
+      onApprove: (data, actions) => {
+        return actions.order.capture().then(function(orderData) {
+          
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          
+          const transaction = orderData.purchase_units[0].payments.captures[0];
+          // completeOrder()
+          alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+     
+          // const element = document.getElementById('paypal-button-container');
+          // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+          // URL:  actions.redirect('thank_you.html');
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+                <a href="{% url 'cash_on_delivery' %}" class="btn btn_1 mt-3" >Cash on delivery</a>
+                <a href="{% url 'payments' %}" class="btn btn_1 mt-3">Razorpay</a>
+            </div>
           </div>
         </div>
+       
       </div>
     </div>
    
   </section>
+   
   <!--================ confirmation part end =================-->
 
 {% endblock%}

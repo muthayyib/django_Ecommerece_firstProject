@@ -1,6 +1,12 @@
+
+from csv import writer
+from datetime import datetime
+from multiprocessing.sharedctypes import Value
 import os
 from socket import IPV6_DONTFRAG
+from urllib import response
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from pkg_resources import get_default_cache
 from adminpanel.forms import OrderEditForm
@@ -14,6 +20,15 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from orders.models import Order,OrderProduct
+from django.db.models.functions import ExtractMonth,ExtractDay
+from django.db.models import Count
+import calendar
+import csv
+import xlwt
+from django.template.loader import render_to_string
+from weasyprint import HTML, html
+import tempfile
+
 # Create your views here.
 
 #admin login
@@ -36,12 +51,116 @@ def logout_admin(request):
     auth.logout(request)
     return redirect(login_admin)
 @login_required(login_url='/newadmin/')
+
 #admin dashboard
+
 def dashboard(request):
-    return render (request,'admin_panel/dashboard_adm.html')
+    #ORDER GRAPH
+    orderbyday = Order.objects.annotate(day=ExtractDay('created_at')).values('day').annotate(count=Count('id'))
+    print(orderbyday)
+    dayday =[]
+    orderperday =[]
+    for o in orderbyday:
+        dayday.append(o['day'])
+        orderperday.append(o['count'])
+    order = Order.objects.annotate(month=ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month','count')
+    monthNumber = []
+    totalOrder = []
+    for ord in order:
+        monthNumber.append(calendar.month_name[ord['month']])
+        totalOrder.append(ord['count'])
+    #total users
+    users_count = Account.objects.all().count()
+
+    #total revenue
+    revenue=0
+    order = OrderProduct.objects.all()
+    for item in order:
+        revenue = revenue + item.product_price
+
+    #total order
+    order_count = Order.objects.all().count()
+
+    
+    # order_status = Order.objects.annotate(status=Value(Ac)).values('statu').annotate(count=Count('id'))
+    # status_status =[]
+    # status_count =[]
+    
+    # print(order_status)
+
+    context = {
+        'monthNumber':monthNumber,
+        'totalOrder':totalOrder,
+        'dayday':dayday,
+        'orderperday':orderperday,
+        'users_count':users_count,
+        'revenue':revenue,
+        'order_count':order_count,
+        # 'today_revenue':today_revenue,
+        }
+    
+    return render (request,'admin_panel/dashboard_adm.html',context)
+
+#csv export
+def export_csv(request):
+    response = HttpResponse(content_type='text/csf')
+    response['Content-Disposition']='attachement; filename=Expenses' + str(datetime.now())+'.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Amount','name','date','order'])
+    orders = Order.objects.filter(status='Completed')
+    for i in orders:
+        writer.writerow([i.first_name])
+    return response
+
+#excel export 
+def export_excel(request):
+    response = HttpResponse(content_type='applications/ms-excel')
+    response['Content-Disposition']='attachement; filename=Expenses' + str(datetime.now())+'.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws =wb.add_sheet('Expenses')
+    row_num=0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    columns = ['first_name','last_name','order_number','status']
+    for col_num in range(len(columns)):
+        ws.write(row_num,col_num,columns[col_num],font_style)
+    font_style = xlwt.XFStyle()
+    
+    rows = Order.objects.all().values_list('first_name','last_name','order_number','status')
+    for row in rows:
+        row_num+=1
+
+        for col_num in range(len(row)):
+            ws.write(row_num,col_num,str(row[col_num]),font_style)
+    wb.save(response)
+    return response
+
+#export to pdf
+def export_pdf(request):
+    response = HttpResponse(content_type='applications/pdf')
+    response['Content-Disposition']='attachement; inline; filename=Expenses' + str(datetime.now())+'.pdf'
+    response['Content-Transfer-Encoding']='binary'
+    orders = Order.objects.all()
+    context ={
+        'orders':orders,
+
+    }
+    html_string = render_to_string('admin_panel/pdf_output.html',context)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+
+
+    with tempfile.NamedTemporaryFile(delete=True) as output: 
+        output.write(result)
+        output.flush()
+
+        output = open(output.name,'rb')
+        response.write(output.read())
+    return response
+
+
 
 #user view admin side
-
 def users_adm(request):
     user_list = Account.objects.all()
     context={'user_list':user_list}
