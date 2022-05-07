@@ -123,6 +123,17 @@ def my_profile(request):
     }
     return render (request,'my_profile.html',context)
 
+#profile edit
+def my_profile_edit(request):
+    profile = Account.objects.get(first_name=request.user.first_name)
+    form = RegisterForm(instance=profile)
+    if request.method =="POST":
+        form = RegisterForm(request.POST,instance=profile)
+        form.save()
+        return redirect ('my_profile')
+    return render (request,'my_profile_edit.html',{'form':form,'profile':profile})
+   
+
     
 @login_required(login_url='login')
 def logout(request):

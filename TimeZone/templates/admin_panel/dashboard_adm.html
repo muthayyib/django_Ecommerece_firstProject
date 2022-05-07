@@ -2,9 +2,7 @@
 {%load static%}
 {% block content%}
 <!-- Sale & Revenue Start -->
-{{monthNumber}}
-{{totalOrder}}
-{{orderbyday}}
+{{order_status_list}}
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-6 col-xl-3">
@@ -72,9 +70,47 @@
                     <h6 class="mb-0">Salse & Revenue</h6>
                     
                 </div>
-                <canvas id="myChart_month"></canvas>
+                <canvas id="statusChart"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+      
+      
+        const data = {
+          labels: ['Completed','Accepted','Pending'],
+          datasets: [{
+            label: 'Order by Day(April)',
+            backgroundColor: ['rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(75, 192, 192, 0.2)',],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)',],
+            data: {{order_status_list}},
+          }]
+        };
+      
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            },
+          };
+        const myChart = new Chart(
+    document.getElementById('statusChart'),
+    config
+  );
+      </script>
+
             </div>
         </div>
+        
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -93,10 +129,7 @@
             'rgb(255, 159, 64)',
             'rgb(75, 192, 192)',],
             data: {{orderperday}},
-          }]
-        };
-      
-        const config = {
+          }]/
             type: 'bar',
             data: data,
             options: {
@@ -285,11 +318,7 @@
                     <input class="form-check-input m-0" type="checkbox" checked>
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span><del>Short task goes here...</del></span>
-                            <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
+                            <span><del>Short task goes here...</del></span>8000
                 <div class="d-flex align-items-center border-bottom py-2">
                     <input class="form-check-input m-0" type="checkbox">
                     <div class="w-100 ms-3">

@@ -16,4 +16,5 @@ urlpatterns = [
     path('login_otp1',views.login_otp1,name='login_otp1'),
     path('logout/',views.logout, name='logout'),
     path('my_profile/',views.my_profile,name='my_profile'),
+    path('my_profile_edit/',views.my_profile_edit,name='my_profile_edit'),
 ]

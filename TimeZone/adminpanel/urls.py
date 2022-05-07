@@ -42,5 +42,19 @@ urlpatterns = [
     path('export_csv',views.export_csv,name='export_csv'),
     path('export_excel',views.export_excel,name='export_excel'),
     path('export_pdf',views.export_pdf,name='export_pdf'),
+    path('offer_view',views.offer_view,name='offer_view'),
+    path('edit_pro_offer/<int:id>',views.edit_pro_offer,name='edit_pro_offer'),
+    path('edit_cat_offer/<int:id>',views.edit_cat_offer,name='edit_cat_offer'),
+    path('add_cat_offer',views.add_cat_offer,name='add_cat_offer'),
+    path('add_pro_offer',views.add_pro_offer,name='add_pro_offer'),
+    path('delete_cat_offer/<int:id>',views.delete_cat_offer,name='delete_cat_offer'),
+    path('delete_pro_offer/<int:id>',views.delete_pro_offer,name='delete_pro_offer'),
+    path('add_coupon',views.add_coupon,name='add_coupon'),
+    path('edit_coupon/<int:id>',views.edit_coupon,name='edit_coupon'),
+    path('delete_coupon/<int:id>',views.delete_coupon,name='delete_coupon'),
+
+
+
+
     
 ]

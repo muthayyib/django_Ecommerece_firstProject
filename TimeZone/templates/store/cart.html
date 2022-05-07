@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load mathfilters%}
  <!--================Cart Area =================-->
  {% if not cart_items%}
 <h2>Your shopping cart is empty</h2>
@@ -48,7 +49,23 @@
                   </div>
                 </td>
                 <td>
-                  <h5>{{cart_item.product.price}}</h5>
+                  {% if cart_item.product.category.cat_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|floatformat:2}}</h5><h6 class="text-muted ml-2"><del>₹ {{cart_item.product.price}}</del></h6>
+                  
+                 </div>
+                  {% elif cart_item.product.pro_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|floatformat:2}}</h5><h6 class="text-muted ml-2"><del>₹ {{cart_item.product.price}}</del></h6>
+                  
+                 </div>
+                 {% else %}
+                 <div class="d-flex align-items-center justify-content-center mt-2"></div>
+                 <h5>₹ {{cart_item.product.price|floatformat:2}}</h5>
+              </div>      
+                 {% endif%}
                 </td>
                 <td>
                   <div class="product_count">
@@ -59,7 +76,23 @@
                 </td>
                 <td><a class="btn btn-primary" href="{% url 'delete_item' cart_item.product.id %}" role="button">Remove</a></td>
                 <td>
-                  <h5>{{cart_item.item_total}}</h5>
+                  {% if cart_item.product.category.cat_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{car_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
+                  
+                 </div>
+                  {% elif cart_item.product.pro_offer%}
+                  <div class="d-flex align-items-center justify-content-center mt-2">
+                      
+                          <h5>₹  {{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
+                  
+                 </div>
+                 {% else %}
+                 <div class="d-flex align-items-center justify-content-center mt-2"></div>
+                 <h5>₹ {{cart_item.product.price|floatformat:2}}</h5>
+              </div>      
+                 {% endif%}
                 </td>
               </tr>
               {% endfor %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mathfilters%}
 
 {% block content%}
 
@@ -65,7 +66,14 @@
                 <li>
                   <a href="#">{{cart_item.product.product_name}}
                     <span class="middle">x {{cart_item.quantity}}</span>
-                    <span class="last">{{cart_item.item_total}}.00</span>
+                    {% if cart_item.product.pro_offer%}
+                    <span class='last'>{{cart_item.product.pro_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</span>
+                    {% elif cart_item.product.category.cat_offer%}
+                    <span class='last'>${{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</span>
+                    
+                   {% else %}
+                   <span class='last'>${{cart_item.product.price|mul:cart_item.quantity|floatformat:2}}</span>
+                   {% endif%}
                   </a>
                 </li>
                 {% endfor%}
@@ -73,20 +81,23 @@
               <ul class="list list_2">
                 <li>
                   <a href="#">Subtotal
-                    <span>{{sub_total}}.00</span>
+                    <span>{{sub_total|floatformat:2}}</span>
+                    
                   </a>
                 </li>
+                {% if coupon %}
                 <li>
-                  <a href="#">Shipping
-                    <span>5.00</span>
+                  <a href="#" class='text-danger'>Coupon applied
+                    <span class='text-danger'>-{{deduction|floatformat:2}}</span>
                   </a>
                 </li>
-                
+              
                 <li>
                   <a href="#">Total
-                    <span>{{grand_total}}</span>
+                    <span>{{final_price|floatformat:2}}</span>
                   </a>
                 </li>
+                {% endif %}
               </ul>
              
 

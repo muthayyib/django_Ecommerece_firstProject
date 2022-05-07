@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {%load static%}
 {%block content%}
+{% load mathfilters%}
 
     <main>
         {% for msg in messages%}
@@ -72,17 +73,30 @@
                         </div>
                     </div>
                 </div>
-                
-                    {% for product in products %}
-                    <div class="row"> <a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-new-pro mb-30 text-center">
-                            <div class="product-img">
-                                <img src="{{product.images.url}}" alt="">
+                    <div class="row"> 
+                        {% for product in products %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 border m-3"><a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
+                            {% if product.pro_offer%}
+                                <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{product.pro_offer.discount}}% off</span>
+                                        
+                            {% endif%}
+                            <div class="single-new-pro text-center">
+                                <div class="product-img p-4">
+                                    <img src="{{product.images.url}}" height='230px' class ='w-100'  alt="">
                             </div>
                             <div class="product-caption">
                                 <h3><a href="product_details.html">{{product.product_name}}</a></h3>
-                                <span>{{product.price}}</span>
+                                {% if product.pro_offer%}
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                
+                                    <h5>₹  {{product.pro_offer.discount|mul:product.price|div:100|sub:product.price|abs}}</h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
+                            
+                           </div>
+                           {% else %}
+                           <div class="d-flex align-items-center justify-content-center mt-2"></div>
+                           <h5>₹ {{product.price}}</h5>
+                        </div>
+                           {% endif%}
                             </div>
                         </div>
                     </div>
@@ -97,24 +111,24 @@
                 <div class="row">
                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery1.png);' %}"></div>
+                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery1.png' %}"></div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery2.png);' %}"></div>
+                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery2.png' %}"></div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4 col-md-12">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
                                 <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery3.png);' %}"></div>
+                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery3.png' %}"></div>
                                 </div>
                             </div>
                             <div class="col-xl-12 col-lg-12  col-md-6 col-sm-6">
                                 <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery4.png);' %}"></div>
+                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery4.png' %}"></div>
                                 </div>
                             </div>
                         </div>
@@ -123,6 +137,20 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Gallery Area End -->
         <!--? Popular Items Start -->
         <div class="popular-items section-padding30">
@@ -137,10 +165,11 @@
                     </div>
                 </div>
                 <div class="row">
+                    {% for product in products %}
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-popular-items mb-50 text-center">
                             <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular1.png' %}" alt="">
+                                <img src="{{product.images.url}}" alt="">
                                 <div class="img-cap">
                                     <span>Add to cart</span>
                                 </div>
@@ -149,96 +178,12 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.html">{{product.product_name}}</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular2.png' %}" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular3.png' %}" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular4.png' %}" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular5.png' %}" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="{% static 'img/gallery/popular6.png' %}" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <!-- Button -->
                 <div class="row justify-content-center">

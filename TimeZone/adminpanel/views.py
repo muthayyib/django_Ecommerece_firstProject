@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from pkg_resources import get_default_cache
+from cart.models import Coupon
+from adminpanel.models import CategoryOffer, ProductOffer
 from adminpanel.forms import OrderEditForm
 from accounts.form import RegisterForm
 from accounts.models import Account
@@ -28,6 +30,8 @@ import xlwt
 from django.template.loader import render_to_string
 from weasyprint import HTML, html
 import tempfile
+
+from . forms import CategoryOfferForm,ProductOfferForm,CouponAdminForm
 
 # Create your views here.
 
@@ -87,6 +91,14 @@ def dashboard(request):
     # status_count =[]
     
     # print(order_status)
+    completed_order = Order.objects.filter(status='Completed').count()
+    pending_order = Order.objects.filter(status='New').count()
+    accepted_order = Order.objects.filter(status='Accepted').count()
+    order_status_list = []
+    order_status_list.append(completed_order)
+    order_status_list.append(accepted_order)
+    order_status_list.append(pending_order)
+    print(order_status_list)
 
     context = {
         'monthNumber':monthNumber,
@@ -96,6 +108,7 @@ def dashboard(request):
         'users_count':users_count,
         'revenue':revenue,
         'order_count':order_count,
+        'order_status_list':order_status_list,
         # 'today_revenue':today_revenue,
         }
     
@@ -294,8 +307,100 @@ def change_status(request,order_number):
     }
     return render(request,'admin_panel/edit_statu.html',context)
 
+#offer management 
+def offer_view(request):
+    cat_offer = CategoryOffer.objects.all()
+    pro_offer = ProductOffer.objects.all()
+    coupon = Coupon.objects.all()
+    context={
+        'cat_offer':cat_offer,
+        'pro_offer':pro_offer,
+        'coupon':coupon,
+    }
+    return render (request,'admin_panel/offer_view.html',context)
 
+#product offer edit
+def edit_pro_offer(request,id):
+    offer = ProductOffer.objects.get(id=id)
+    form = ProductOfferForm(instance=offer)
+    if request.method =="POST":
+        form = ProductOfferForm(request.POST,instance=offer)
+        form.save()
+        messages.success(request,'Product offer updated successfully')
+        return redirect('offer_view')
+    return render (request,'admin_panel/edit_pro_offer.html',{'form':form,'offer':offer})
 
+#category offer edit pro_
+def edit_cat_offer(request,id):
+    offer = CategoryOffer.objects.get(id=id)
+    form = CategoryOfferForm(instance=offer)
+    if request.method =="POST":
+        form = CategoryOfferForm(request.POST,instance=offer)
+        form.save()
+        messages.success(request,'Category offer updated successfully')
+        return redirect('offer_view')
+    return render (request,'admin_panel/edit_cat_offer.html',{'form':form,'offer':offer})
 
-    
-    
+#add category offer
+def add_cat_offer(request):
+    form = CategoryOfferForm(request.POST)
+    if form.is_valid():
+        form.save()
+        messages.info(request,'Category added successfully')
+        return redirect(offer_view)
+    context ={
+        'form':form
+    }
+    return render (request,'admin_panel/add_cat_offer.html',context)
+#add product offer
+def add_pro_offer(request):
+    form = ProductOfferForm(request.POST)
+    if form.is_valid():
+        form.save()
+        messages.info(request,'Product offer added successfully')
+        return redirect(offer_view)
+    context ={
+        'form':form
+    }
+    return render (request,'admin_panel/add_pro_offer.html',context)
+
+#delete category by admin
+def delete_cat_offer(request,id):
+    offer = CategoryOffer.objects.filter(id=id)
+    offer.delete()
+    return redirect(offer_view)
+
+#delete category by admin
+def delete_pro_offer(request,id):
+    offer = ProductOffer.objects.get(id=id)
+    offer.delete()
+    return redirect(offer_view)
+
+#coupon amaaasdfhasdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff coupon
+#add product offer
+def add_coupon(request):
+    form = CouponAdminForm(request.POST)
+    if form.is_valid():
+        form.save()
+        messages.info(request,'coupon added successfully')
+        return redirect(offer_view)
+    context ={
+        'form':form
+    }
+    return render (request,'admin_panel/add_coupon.html',context)
+#edit coupons
+def edit_coupon(request,id):
+    coupon = Coupon.objects.get(id=id)
+    form = CouponAdminForm(instance=coupon)
+    if request.method =="POST":
+        form = CouponAdminForm(request.POST,instance=coupon)
+        form.save()
+        messages.success(request,'coupon updated successfully')
+        return redirect('offer_view')
+    return render (request,'admin_panel/edit_coupon.html',{'form':form,'coupon':coupon})
+
+#delete category by admin
+def delete_coupon(request,id):
+    coupon = Coupon.objects.get(id=id)
+    coupon.delete()
+    return redirect(offer_view)

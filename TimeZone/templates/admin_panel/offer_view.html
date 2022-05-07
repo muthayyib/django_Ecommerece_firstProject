@@ -1,0 +1,195 @@
+{% extends 'admin_panel/base_admin.html'%}
+{% block content%}
+
+<div class="container-fluid pt-4 px-4">
+<!-- Table Start -->
+   <div class="row g-4">
+       <div class="col-12">
+           <div class="bg-light rounded h-100 p-4">
+              <a href="{% url 'add_cat_offer' %}"><button type="button" class="btn btn-info m-2 "  >Add category offer</button></a>
+               <div class="table-responsive">
+                   <table class="table">
+                       <thead>
+                           <tr>
+                               <th scope="col">#</th>
+                               <th scope="col">Category</th>
+                               <th scope="col">Discount</th>
+                               <th scope="col">Valid from</th>
+                               <th scope="col">Valid to</th>
+                               <th scope="col">active</th>
+                               <th scope="col">Edit</th>
+                               <th scope="col">Delete</th>
+                           </tr>
+                       </thead>
+                       {% for offer in cat_offer%}
+                       <tbody>
+                           <tr>
+                               <th scope="row">{{offer.id}}</th>
+                               <td>{{offer.category}}</td>
+                               <td>{{offer.discount}}%</td>
+                               <td>{{offer.valid_from}}</td>
+                               <td>{{offer.valid_to}}</td>
+                               <td>{{offer.active}}</td>
+                               <td><a href="/newadmin/edit_cat_offer/{{offer.id}}"><i class="fas fa-edit"></i></a></td>
+                               <td><a   data-bs-toggle="modal" data-bs-target="#offer-{{offer.id}}"><i class="fas fa-trash"></i></a></td>
+                               
+                           <!-- Modal -->
+                           <div class="modal fade" id="offer-{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                             <div class="modal-dialog">
+                               <div class="modal-content">
+                                 <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                 </div>
+                                 <div class="modal-body">
+                                   <p>Do you really want to delete {{offer.category}}</p>
+                                 </div>
+                                 <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                   
+                                   <a href="{% url 'delete_cat_offer' offer.id %}"><button  type="button" class="btn btn-primary">Confirm</button></a>
+                                 </div>
+                               </div>
+                             </div>
+                            
+                           </div>
+
+                               
+                           </tr>
+                           
+                       </tbody>
+                       {% endfor %}
+                   </table>
+               </div>
+           </div>
+       </div>
+
+       <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+           <a href="{% url 'add_pro_offer' %}"><button type="button" class="btn btn-info m-2 "  >Add Product offer</button></a>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Discount</th>
+                            <th scope="col">Valid from</th>
+                            <th scope="col">Valid to</th>
+                            <th scope="col">active</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    {% for offer in pro_offer%}
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{offer.id}}</th>
+                            <td>{{offer.product}}</td>
+                            <td>{{offer.discount}}%</td>
+                            <td>{{offer.valid_from}}</td>
+                            <td>{{offer.valid_to}}</td>
+                            <td>{{offer.active}}</td>
+                           <td><a href="/newadmin/edit_pro_offer/{{offer.id}}"><i class="fas fa-edit"></i></a></td>
+                            <td><a   data-bs-toggle="modal" data-bs-target="#offer-{{offer.id}}"><i class="fas fa-trash"></i></a></td>
+                            
+                        <!-- Modal -->
+                        <div class="modal fade" id="offer-{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p>Do you really want to delete {{offer.product}}</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                
+                                <a href="{% url 'delete_pro_offer' offer.id%}"><button  type="button" class="btn btn-primary">Confirm</button></a>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+
+                            
+                        </tr>
+                        
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} coupon table {% endcomment %}
+    <div class="col-12">
+      <div class="bg-light rounded h-100 p-4">
+         <a href="{% url 'add_coupon' %}"><button type="button" class="btn btn-info m-2 "  >Add coupon</button></a>
+          <div class="table-responsive">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Discount</th>
+                          <th scope="col">Valid from</th>
+                          <th scope="col">Valid to</th>
+                          <th scope="col">active</th>
+                          <th scope="col">Edit</th>
+                          <th scope="col">Delete</th>
+                      </tr>
+                  </thead>
+                  {% for coup in coupon %}
+                  <tbody>
+                      <tr>
+                          <th scope="row">{{coup.id}}</th>
+                          <td>{{coup.code}}</td>
+                          <td>{{coup.discount}}%</td>
+                          <td>{{coup.valid_from}}</td>
+                          <td>{{coup.valid_to}}</td>
+                          <td>{{coup.active}}</td>
+                         <td><a href="/newadmin/edit_coupon/{{coup.id}}"><i class="fas fa-edit"></i></a></td>
+                          <td><a   data-bs-toggle="modal" data-bs-target="#coup-{{coup.id}}"><i class="fas fa-trash"></i></a></td>
+                          
+                      <!-- Modal -->
+                      <div class="modal fade" id="coup-{{coup.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Do you really want to delete {{coup.code}}</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              
+                              <a href="{% url 'delete_coupon' coup.id %}"><button  type="button" class="btn btn-primary">Confirm</button></a>
+                            </div>
+                          </div>
+                        </div>
+                       
+                      </div>
+
+                          
+                      </tr>
+                      
+                  </tbody>
+                  {% endfor %}
+              </table>
+          </div>
+      </div>
+  </div>
+  {% comment %} end coupon tabel {% endcomment %}
+   </div>
+</div>
+<!-- Table End -->
+{% endblock%}
+
+{% block scripts%}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+{% endblock scripts%}

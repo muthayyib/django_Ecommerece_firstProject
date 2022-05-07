@@ -1,0 +1,10 @@
+{% extends 'admin_panel/base_admin.html'%} {% block content%}
+<form action="{% url 'edit_cat_offer' offer.id %}" method="POST" class="col-lg-6">
+  {% csrf_token %}
+  <div class="form-control row " width='1rem'>
+    {{form}}
+  </div>
+  <button type="submit" class="btn btn-warning" >save</button>
+</form>
+
+{% endblock%}

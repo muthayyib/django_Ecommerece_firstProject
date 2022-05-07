@@ -10,7 +10,7 @@ from django.shortcuts import redirect, render
 
 from store.models import Product
 from .forms import OrderForm
-from cart.models import CartItem
+from cart.models import CartItem, Coupon
 from orders.models import Order
 from . models import OrderProduct
 import datetime
@@ -18,6 +18,7 @@ import razorpay
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
+from cart.views import offer_check_function
 
 
 # Create your views here.
@@ -83,14 +84,31 @@ def place_order(request,total = 0,quantity = 0):
            
             order_data = Order.objects.get(order_number=order_number)
             order_item = OrderProduct.objects.filter(order=order_data)
-            g_total=0
+            
+            sub_total=0
             for item in order_item:
-                subr_total = item.product_price * item.quantity
-                g_total = g_total + subr_total
+                new_price =  offer_check_function(item)
+                sub_total += (new_price * item.quantity)
+                print(sub_total)
+                print(item,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+            if request.session:
+                coupon_id = request.session.get('coupon_id')
+                print(coupon_id)
+            try:
+                coupon = Coupon.objects.get(id=coupon_id)
+                deduction = coupon.discount_amount(sub_total)
+                sub_total = sub_total-deduction
+                
+            except:
+                pass
+        
+            else:
+                sub_total = sub_total
             context = {
                     'order_data':order_data,
                     'order_item':order_item,
-                    'g_total':g_total
+                    'sub_total':sub_total,
+                    'ordereditem':ordereditem,
             }
             return render(request,'orders/confirmation.html',context)
         else:
@@ -130,13 +148,20 @@ def order_cancel_user(request,order_number):
     ord.save()
     return redirect('my_orders')
 
+def return_order(request,order_number):
+    ord = Order.objects.get(order_number=order_number)
+    ord.status='Returned'
+    ord.save()
+    return render (request,'orders/return_order.html',{'ord':ord})
+
 
 # authorize razorpay client with API Keys.
 
     
 def payments(request):
     currency = 'INR'
-    amount = 20000  # Rs. 200
+
+    amount = '200000'
     razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
  

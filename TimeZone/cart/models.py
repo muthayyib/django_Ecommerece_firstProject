@@ -23,6 +23,7 @@ class CartItem(models.Model):
     def item_total(self):
         return self.product.price * self.quantity
 
+
     def __str__(self):
         return self.product.product_name
 
@@ -37,4 +38,7 @@ class Coupon(models.Model):
     active = models.BooleanField()
 
     def __str__(self):
-        return self.code 
+        return self.code
+
+    def discount_amount(self,sub_total):
+        return self.discount/100*sub_total

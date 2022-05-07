@@ -1,4 +1,6 @@
 from pickle import OBJ
+from re import sub
+from unicodedata import category
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from store.models import Product
@@ -8,9 +10,29 @@ from datetime import datetime
 from . models import Coupon
 from django.utils import timezone
 import pytz
+from adminpanel.models import ProductOffer
+from adminpanel.models import CategoryOffer
 
 from .forms import CouponApplyForm
 # Create your views here.
+def offer_check_function(item):
+    product = Product.objects.get(product_name=item)
+    print(product)
+    if ProductOffer.objects.filter(product=product).exists():
+        if product.pro_offer:
+            sub_total = product.price - product.price*product.pro_offer.discount/100
+    elif CategoryOffer.objects.filter(category=item.product.category).exists():
+           if item.product.category.cat_offer:
+               sub_total = product.price - product.price*item.product.category.cat_offer.discount/100
+    else:
+        sub_total=product.price
+        print(sub_total)
+    return sub_total
+        
+    
+
+    
+    
 
 
 def _cart_id(request):
@@ -58,7 +80,7 @@ def add_cart(request,product_id):
 
             cart_item.save()
     
-    return redirect('cart')
+    return redirect('store')
 
 def remove_cart(request,product_id):
     
@@ -96,15 +118,14 @@ def cart(request, sub_total=0, quantity=0, cart_items=None):
         if request.user.is_authenticated:
             
             cart_items = CartItem.objects.filter(user=request.user,is_active=True)
+            cart_count = CartItem.objects.filter(user=request.user,is_active=True).count()
             
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            cart_count = CartItem.objects.filter(cart=cart, is_active=True).count()
         
-        for cart_item in cart_items:
-            sub_total += (cart_item.product.price * cart_item.quantity)
-            quantity += cart_item.quantity
-     
+       
     except:
         pass #just ignore
 
@@ -112,11 +133,12 @@ def cart(request, sub_total=0, quantity=0, cart_items=None):
         'sub_total': sub_total,
         'quantity': quantity,
         'cart_items': cart_items,
+        'cart_count':cart_count
     }
     return render(request, 'store/cart.html', context)    
 
 @login_required
-def checkout(request, sub_total=0, quantity=0, cart_items=None):
+def checkout(request, sub_total=0, quantity=0, cart_items=None,coupon=None, final_price=0,deduction =0):
     try:
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
@@ -124,30 +146,37 @@ def checkout(request, sub_total=0, quantity=0, cart_items=None):
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
         for cart_item in cart_items:
-            sub_total += (cart_item.product.price * cart_item.quantity)
-            quantity += cart_item.quantity
-        shipping = 5
-        grand_total = shipping + sub_total
+            new_price =  offer_check_function(cart_item)
+            sub_total += (new_price * cart_item.quantity)
+            print('heheeh')
     except:
         pass #just ignore
     coupon_apply_form = CouponApplyForm()
+   
     if request.session:
         coupon_id = request.session.get('coupon_id')
         print(coupon_id)
         try:
             coupon = Coupon.objects.get(id=coupon_id)
-            grand_total = shipping + sub_total-(coupon.discount/100*sub_total)
+            deduction = coupon.discount_amount(sub_total)
+            final_price = sub_total-deduction
+            print(final_price)
         except:
             pass
         
     else:
-        grand_total = shipping + sub_total
+        sub_total = sub_total
+
+        
     context = {
         'sub_total': sub_total,
+        'final_price':final_price,
         'quantity': quantity,
         'cart_items': cart_items,
-        'grand_total':grand_total,
         'coupon_apply_form':coupon_apply_form,
+        'coupon':coupon,
+        'deduction':deduction,
+
     }
     return render (request,'cart/checkout.html',context)
     

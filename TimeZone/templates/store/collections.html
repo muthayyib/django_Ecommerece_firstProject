@@ -17,9 +17,13 @@
                 {% for item in category%}
                 <div class="col-md-4">
                     <div class="card">
+                        
                         <a href="{% url 'collectionsview' item.category_slug%}">
                         <div class="card-body">
                             <div class="category-image">
+                                {% if item.cat_offer %}
+                            <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{item.cat_offer.discount}}% off</span>
+                        {% endif%}
                                 <img src="{{item.cat_img.url}}" height='200px' class ='w-100' alt="">
                             </div>
                             <h4 class='text-center'>{{item.category_name}}</h4>

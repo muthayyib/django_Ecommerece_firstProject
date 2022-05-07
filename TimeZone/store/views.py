@@ -1,17 +1,32 @@
 
+from importlib.machinery import OPTIMIZED_BYTECODE_SUFFIXES
+from itertools import product
 import django
 from django.shortcuts import redirect, render
+
+from adminpanel.models import ProductOffer
 from .models import Product
 from category.models import Category
 from django.contrib import messages
 # Create your views here.
 def store(request):
     products = Product.objects.all().filter(is_available =True)
+    sort_by = request.GET.get("sort") 
+    if sort_by == "l2h":  
+        products = Product.objects.all().filter(is_available =True).order_by('price')
+    elif sort_by == "h2l":
+        products = Product.objects.all().filter(is_available =True).order_by('-price')
+    elif sort_by =='new':
+        products = Product.objects.all().filter(is_available =True).order_by('-modified_date')
+
+   
     product_count = products.count()
+
 
     context = {
         'products':products,
-        'count': product_count
+        'count': product_count,
+        
     }
     return render (request,'store.html',context)
 
