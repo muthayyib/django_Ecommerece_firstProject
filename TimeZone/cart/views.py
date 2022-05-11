@@ -1,10 +1,11 @@
 from pickle import OBJ
 from re import sub
 from unicodedata import category
+import django
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from store.models import Product
-from . models import Cart, CartItem
+from . models import Cart, CartItem, CouponUsedUser
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from . models import Coupon
@@ -12,7 +13,7 @@ from django.utils import timezone
 import pytz
 from adminpanel.models import ProductOffer
 from adminpanel.models import CategoryOffer
-
+from django.contrib import messages
 from .forms import CouponApplyForm
 # Create your views here.
 def offer_check_function(item):
@@ -153,19 +154,24 @@ def checkout(request, sub_total=0, quantity=0, cart_items=None,coupon=None, fina
         pass #just ignore
     coupon_apply_form = CouponApplyForm()
    
-    if request.session:
+    if request.session.get('coupon_id'):
         coupon_id = request.session.get('coupon_id')
         print(coupon_id)
         try:
             coupon = Coupon.objects.get(id=coupon_id)
-            deduction = coupon.discount_amount(sub_total)
-            final_price = sub_total-deduction
-            print(final_price)
+            if CouponUsedUser.objects.filter(coupon=coupon,user=request.user).exists():
+                print('Coupon already used')
+                final_price = sub_total
+                messages.successs(request,'Coupon already used')
+            else:
+                deduction = coupon.discount_amount(sub_total)
+                final_price = sub_total-deduction
+                print(final_price)
         except:
             pass
         
     else:
-        sub_total = sub_total
+        final_price = sub_total
 
         
     context = {

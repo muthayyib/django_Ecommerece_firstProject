@@ -34,7 +34,7 @@
               </thead>
               <tbody>
                 
-                {% for item in order_item%}
+                {% for item in cart_item%}
                 <tr>
                   <th colspan="2"><span>{{item.product.product_name}}</span></th>
                   <th>{{item.quantity}}</th>
@@ -52,7 +52,7 @@
                    {% else %}
                    <span class='last'>${{item.product.price|mul:item.quantity|floatformat:2}}</span>
                    {% endif%}</th>
-                  {% comment %} <th> <span>{% widthratio item.product_price 1 item.quantity %}</span></th> {% endcomment %}
+                 
                 </tr>
                 {% endfor%}
                 <tr>
@@ -76,29 +76,40 @@
               </tfoot>
             </table>
             <div class="col-md-3">
-              <!-- Set up a container element for the button -->
+
+
+
+
+
+
+<!-- Set up a container element paypal for the button -->
               <script src="https://www.paypal.com/sdk/js?client-id=AbZ1PMGV77_89-ap2iGwwQdK2pZ4R-A892kO9HUWd66KzB8sNJJSqTPRLqZIcMnbCa1S5SVlU9lTp1tl&currency=USD"></script>
               <div id="paypal-button-container"></div>
                       
    <script>
-//      function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             // Does this cookie string begin with the name we want?
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-// const csrftoken = getCookie('csrftoken');
-
+     function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+  
+    var csrftoken = getCookie('csrftoken');
     var total = '{{ sub_total | add:"5"}}'
+    var url = '{% url 'paypal_complete' %}'
+    var orderID = '{{order_data.order_number}}'       
+    var payment_method= 'Paypal'
+    
+
   
     
    
@@ -106,11 +117,11 @@
       
       // Sets up the transaction when a payment button is clicked
       createOrder: (data, actions) => {
-        console.log(total);
+        
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: total   // Can also reference a variable or function
+              value: total   
             }
           }]
         });
@@ -123,18 +134,105 @@
           console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
           
           const transaction = orderData.purchase_units[0].payments.captures[0];
+          
           // completeOrder()
-          alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-     
-          // const element = document.getElementById('paypal-button-container');
-          // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-          // URL:  actions.redirect('thank_you.html');
+          sendData();              
+          function sendData(){
+            
+//send payment details to backend
+                                      fetch(url, {
+                                        method: 'POST',       
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'X-CSRFToken':csrftoken
+                                        },
+                                        body: JSON.stringify({
+                                          orderID :orderID,
+                                          transID: orderData.id,
+                                          payment_method:payment_method,
+                                          status:orderData.status,
+                                          total:total,
+                                        }),
+                                      })
+                                      .then(response => response.json())
+                                      .then(data => {
+                                        console.log('Success:', data);
+                                        window.location.href = window.location.origin + '/orders/paypal_complete_display/'
+                                        console.log(window.location)
+                                      })
+                                      .catch((error) => {
+                                        console.error('Error:', error);
+
+                                      }); 
+
+          }
+         
         });
       }
     }).render('#paypal-button-container');
   </script>
-                <a href="{% url 'cash_on_delivery' %}" class="btn btn_1 mt-3" style="padding:17px 35px" >Cash on delivery</a>
-                <a href="{% url 'payments' %}" class="btn btn_1 mt-3" style="padding:17px 64px">Razorpay</a>
+
+
+  <a href="{% url 'cash_on_delivery' %}" class="btn btn_1 mt-3" style="padding:17px 35px" >Cash on delivery</a>
+
+
+
+
+
+
+
+
+
+
+  <button class="btn btn_1 mt-3" style="padding:17px 35px" id="rzp-button1">Pay with Razorpay</button>
+
+
+      <form  method="POST">
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}", // Enter the Key ID generated from the Dashboard
+            "amount": "{{ razorpay_amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "My cart thayyib",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ razorpay_order_id }}", 
+            "callback_url": "{{callback_url}}",
+            "prefill": {
+                "name": "Muhammed Thayyib",
+                "email": "mu@gmail.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc",
+                "hide_topbar": true 
+            },
+            "modal": {
+              "animation": true,
+              
+            }
+
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+        </script>
+ </form>
+
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>

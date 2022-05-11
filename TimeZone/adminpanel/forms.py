@@ -1,7 +1,10 @@
+from dataclasses import fields
 from django import forms
 from orders.models import Order
 from . models import CategoryOffer, ProductOffer
 from cart.models import Coupon
+import django_filters
+from orders.models import Order
 
 
 
@@ -45,4 +48,10 @@ class CouponAdminForm(forms.ModelForm):
             'valid_to': DateTimeLocal(),
         }
 
-# class OrderFilter()
+#admin report by django-filters modules
+class OrderFilter(django_filters.FilterSet):
+    
+
+    class Meta:
+        model = Order
+        fields = '__all__'

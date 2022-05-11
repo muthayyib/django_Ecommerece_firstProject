@@ -31,7 +31,7 @@ from django.template.loader import render_to_string
 from weasyprint import HTML, html
 import tempfile
 
-from . forms import CategoryOfferForm,ProductOfferForm,CouponAdminForm
+from . forms import CategoryOfferForm, OrderFilter,ProductOfferForm,CouponAdminForm
 
 # Create your views here.
 
@@ -404,3 +404,29 @@ def delete_coupon(request,id):
     coupon = Coupon.objects.get(id=id)
     coupon.delete()
     return redirect(offer_view)
+#reports admin side
+def order_filter(request):
+    filter = OrderFilter(request.GET, queryset=Order.objects.all())
+    filter_set = OrderFilter(request.GET, queryset=Order.objects.all()).qs
+    pdf = request.GET.get('pdf')
+    if pdf:
+        response = HttpResponse(content_type='applications/pdf')
+        response['Content-Disposition']='attachement; inline; filename=Expenses' + str(datetime.now())+'.pdf'
+        response['Content-Transfer-Encoding']='binary'
+        orders = Order.objects.all()
+        context ={
+            'filter_set':filter_set,
+        }
+        html_string = render_to_string('admin_panel/pdf_output.html',context)
+        html = HTML(string=html_string)
+        result = html.write_pdf()
+
+
+        with tempfile.NamedTemporaryFile(delete=True) as output: 
+            output.write(result)
+            output.flush()
+
+            output = open(output.name,'rb')
+            response.write(output.read())
+        return response
+    return render (request,'admin_panel/order_filter.html',{'filter':filter})

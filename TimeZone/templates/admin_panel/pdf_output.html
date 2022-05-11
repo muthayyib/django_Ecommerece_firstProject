@@ -29,14 +29,17 @@
             </tr>
         </thead>
         <tbody class="">
-            {% for i in orders%}
+            {% comment %} {% for i in orders%}
             <tr>
                 <td>{{i.id}}</td>
                 <td>{{i.first_name}}</td>
                 <td>{{i.last_name}}</td>
                 <td>{{i.zip}}</td>
             </tr>
-            {% endfor%}
+            {% endfor%} {% endcomment %}
+            {% for set in filter_set %}
+                {{set.first_name}}
+            {% endfor %}
         </tbody>
     </table>
 </body>

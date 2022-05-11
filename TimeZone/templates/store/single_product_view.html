@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block css %}
+<link href="{% static 'user/css/jquery.exzoom.css' %}" rel="stylesheet">
+<style>
+    #shop_now{
+        border-bottom: 3px rgb(6,11,30) solid;
+        border-left:3px rgb(6,11,30) solid ;
+        border-top: 3px rgb(6,11,30) solid;
+        
+        
+    }
+    #shop_now:hover{
+        background-color: rgba(0, 0, 0, 0.671);
+        color: white;
+        border: 3px rgb(255,211,51) solid;
+    }
+    #add_to_cart{
+        border-bottom: 3px rgb(6,11,30) solid;
+        border-right:3px rgb(6,11,30) solid ;
+        border-top: 3px rgb(6,11,30) solid
+
+    }
+    #add_to_cart:hover{
+        background-color: rgba(0, 0, 0, 0.671);
+        color: white;
+        border: 3px rgb(255,211,51) solid;
+    }
+</style>
+{% endblock css %}
+
+{% block base %}
+
+<div class="container-fluid pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-5 mb-30 ">
+            <div class="exzoom" id="exzoom" >
+                <!-- Images -->
+                <div class="exzoom_img_box">
+                  <ul class='exzoom_img_ul'>
+                    <li><img src="{{product.image_1.url}}"/></li>
+                    <li><img src="{{product.image_2.url}}"/></li>
+                    <li><img src="{{product.image_3.url}}"/></li>
+                    <li><img src="{{product.image_4.url}}"/></li>
+             
+                  </ul>
+                </div>
+                <!-- <a href="https://www.jqueryscript.net/tags.php?/Thumbnail/">Thumbnail</a> Nav-->
+                <div class="exzoom_nav">
+                        <!-- Nav Buttons -->
+                        <p class="exzoom_btn">
+                        </p>
+                    </div>
+              </div>
+
+
+        </div>
+
+        <div class="col-lg-7 h-auto mb-30">
+            <div class="h-100 bg-light p-30">
+                <h3>{{ product.product_name}}</h3>
+                <div class="d-flex mb-3">
+                    <div class="text-primary mr-2">
+                        <small class="fas fa-star"></small>
+                        <small class="fas fa-star"></small>
+                        <small class="fas fa-star"></small>
+                        <small class="fas fa-star-half-alt"></small>
+                        <small class="far fa-star"></small>
+                    </div>
+                    <small class="pt-1">(99 Reviews)</small>
+                </div>
+
+                                {% if product.category.catoffer and product.category.catoffer.active == True %}
+                                        <!-- checking the porduct has the offer -->
+                                        {% if product.product_off %}
+                                        
+                                            <!-- this is for checking the offer is available or not and applying the category offer-->
+                                            {% if  product.category.catoffer.category_offer_check %}
+                                            <h5>₹ {{product.category.catoffer.offer_percentage|div:100|mul:product.price|sub:product.price|abs}} </h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
+                                            {% endif %}
+
+                                        {% else %}<!-- this is for the category offer  -->
+                                        <h1>haii jithin raj mmm</h1>
+                                             <!-- this is for checking the offer is available or not -->
+                                             {% if  product.category.catoffer.category_offer_check %}
+                                             <h5>₹ {{product.category.catoffer.offer_percentage|div:100|mul:product.price|sub:product.price|abs}} </h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
+                                             {% endif %} 
+
+                                        {% endif %}
+
+
+
+                                    <!-- this is checking the product offer is available or not -->
+                                {% elif product.product_off  and product.product_off.active == True %} 
+                                        <!-- this condition is checking the product offer is valid or not -->
+                                        {% if product.product_off.product_offer_check %}
+                                            <h5>₹ {{product.product_off.offer_percentage|div:100|mul:product.price|sub:product.price|abs}} </h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
+                                        {% endif %}
+
+                                {% else %}
+                                      
+                                    <h5>₹ {{product.price}}</h5><h6 class="text-muted ml-2"></h6>
+                                        
+                                {% endif %}
+             
+                <p class="mb-4">{{product.description}} </p>
+                <p class="mb-4">{{product.category}} </p>
+         
+       
+                <div class="d-flex align-items-center mb-4 pt-2">
+
+
+                    {% if product.stock %}
+                            <a href="{% url 'buy_now' product.id %}" id='shop_now' class="btn btn-warning px-3"><i class="fa fa-shopping-cart mr-1"></i> Buy Now</a>
+                
+                            {% if product_id_cart %}
+                            <button id="add_to_cart" class="btn btn-warning px-3">Item In Cart<i class="fa fa-shopping-cart mr-1"></i></button>
+                            {% else %}
+                            <a id="add_to_cart" href="{% url 'add-to-cart' product.id %}" class="btn btn-warning px-3">Add To Cart<i class="fa fa-shopping-cart mr-1"></i> </a>
+                            {% endif %}
+                    {% else %}
+                    <button  class="btn px-3" style="background-color: rgba(255, 0, 0, 0.84); color: black;">OUT OF STOCK</button>
+                    {% endif %}
+                  
+ 
+                    
+                    
+                </div>
+                <div class="d-flex pt-2">
+                    <strong class="text-dark mr-2">Share on:</strong>
+                    <div class="d-inline-flex">
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="text-dark px-2" href="">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="{% static 'user/js/jquery.exzoom.js' %}"></script>
+<script>
+    $(function(){
+
+        $("#exzoom").exzoom({
+        // options here
+            "navWidth": 60,
+            "navHeight": 60,
+            "navItemNum": 5,
+            "navItemMargin": 50,
+            "navBorder": 1,
+
+            // autoplay
+            "autoPlay": false,
+
+            // autoplay interval in milliseconds
+            "autoPlayTimeout": 2000
+    });
+
+});
+</script>
+
+{% endblock scripts %}
+
+
+
+
+    {% endblock base %}

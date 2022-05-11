@@ -68,3 +68,5 @@ def productDetails(request,cat_slug,prod_slug):
         messages.error(request,'No such category')
         return redirect('collections')
     return render(request, 'store/view_pro.html',context)
+    #return render(request, 'product_details.html',context)
+    # return render(request, 'store/single_product_view.html',context)

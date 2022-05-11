@@ -1,0 +1,44 @@
+{% extends 'admin_panel/base_admin.html'%} {% block content%}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+<form  method="GET">
+
+  <div class="form-control row " width='1rem'>
+    {{ filter.form.as_p }}
+  </div>
+ 
+
+  
+  <button ><a href="?pdf='pdf'">jjjjjjjjjjjj</a>Search</button>
+</form>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+   
+  </div>
+</div>
+<div class="col-lg-8">
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th></th>
+        <th>name</th>
+        <th>prod</th>
+      </tr>
+      {% for obj in filter.qs %}
+      <tr>
+        <td>{{obj.order_number}}</td>
+       <td></td>
+        <td>{{obj.first_name}}</td>
+        <td>{{obj.first_name}}</td>
+      </tr>
+      {% endfor %}
+    </thead>
+  </table>
+</div>
+
+  </div>
+</div>
+{% endblock%}

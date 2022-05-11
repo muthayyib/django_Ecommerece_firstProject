@@ -9,8 +9,10 @@ urlpatterns = [
     path('order_view/<int:id>',views.order_view,name='order_view'),
     path('order_cancel_user/<int:order_number>',views.order_cancel_user,name='order_cancel_user'),
     path('return_order/<int:order_number>',views.return_order,name='return_order'),
-    path('payments/',views.payments,name='payments'),
-    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('razor_success/',views.razor_success,name='razor_success'),
     path('cod/',views.cash_on_delivery,name='cash_on_delivery'),
+    path('paypal_complete/',views.paypal_complete,name='paypal_complete'),
+    path('paypal_complete_display/',views.paypal_complete_display,name='paypal_complete_display'),
+    
 
 ]

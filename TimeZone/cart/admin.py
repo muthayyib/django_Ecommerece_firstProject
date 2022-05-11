@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Cart,CartItem,Coupon
+from . models import Cart,CartItem,Coupon,CouponUsedUser
 
 # Register your models here.
 admin.site.register(Cart)
@@ -11,3 +11,4 @@ class CouponAdmin(admin.ModelAdmin):
     search_fields = ['code']
 
 admin.site.register(Coupon,CouponAdmin)
+admin.site.register(CouponUsedUser)

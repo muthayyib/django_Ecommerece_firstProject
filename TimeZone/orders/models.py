@@ -4,10 +4,18 @@ from sre_parse import State
 from django.db import models
 from accounts.models import Account
 from store.models import Product
+from cart.models import Coupon
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 # Create your models here.
 
 class Payment(models.Model):
-    user = models.ForeignKey(Account,on_delete=models.CASCADE)
+    STATUS =(
+        ('Pending','Pending'),
+        ('Completed','Completed'),
+        ('Cancelled','Cancelled'),
+    )
+    user = models.ForeignKey(Account,on_delete=models.CASCADE, null=True, blank=True)
     payment_id = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
     amount_paid = models.CharField(max_length=100)
@@ -25,6 +33,11 @@ class Order(models.Model):
         ('Cancelled','Cancelled'),
         ('Returned','Returned')
 
+    )
+    PAYMENT_MODE = (
+        ('COD','COD'),
+        ('PAYPAL','PAYPAL'),
+        ('RAZOR_PAY','RAZORPAY')
     )
     user = models.ForeignKey(Account,on_delete=models.SET_NULL,null=True)
     payment = models.ForeignKey(Payment,on_delete=models.SET_NULL, blank=True, null=TRUE)
@@ -47,8 +60,22 @@ class Order(models.Model):
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    coupon  = models.ForeignKey(Coupon,related_name='orders',on_delete=models.CASCADE,null=True,blank=True)
+    discount = models.IntegerField(default=0,validators=[MinValueValidator(0),MaxValueValidator(50)])
+
     def __str__(self):
         return self.first_name
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def full_address(self):
+        return f'{self.address_line1} {self.address_line2}'
+
+    def __str__(self):
+        return self.first_name
+    class Meta:
+        ordering = ['-created_at','-updated_at']
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
@@ -68,3 +95,14 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return self.product.product_name
+
+    class Meta:
+        ordering= ('-created_at','-updated_at')
+
+class RazorPay(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    razor_pay = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.order.order_number
+

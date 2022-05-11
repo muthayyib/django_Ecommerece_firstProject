@@ -76,10 +76,11 @@
                 </td>
                 <td><a class="btn btn-primary" href="{% url 'delete_item' cart_item.product.id %}" role="button">Remove</a></td>
                 <td>
+                   <!-- total price of individula cart items -->
                   {% if cart_item.product.category.cat_offer%}
                   <div class="d-flex align-items-center justify-content-center mt-2">
                       
-                          <h5>₹  {{car_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
+                          <h5>₹  {{cart_item.product.category.cat_offer.discount|mul:cart_item.product.price|div:100|sub:cart_item.product.price|abs|mul:cart_item.quantity|floatformat:2}}</h5><h6 class="text-muted ml-2"></h6>
                   
                  </div>
                   {% elif cart_item.product.pro_offer%}
