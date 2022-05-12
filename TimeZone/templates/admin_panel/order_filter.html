@@ -1,16 +1,16 @@
 {% extends 'admin_panel/base_admin.html'%} {% block content%}
+{% load crispy_forms_tags %}
+
 <div class="container">
   <div class="row">
     <div class="col-lg-4">
 <form  method="GET">
 
-  <div class="form-control row " width='1rem'>
-    {{ filter.form.as_p }}
+  <div class="uniForm" style="margin-top:6%; margin-left:auto; background-color: #F8F9FA; padding: 2rem;" width='2rem'>
+    {{ filter.form|crispy }}
+    <button class="btn-primary" style="margin-top: 1rem;" >Search</button>
   </div>
- 
 
-  
-  <button >Search</button>
 </form>
 </div>
 
@@ -20,10 +20,11 @@
        
         <a href="?pdf='pdf'">pdf</a>
           <div class="table-responsive">
-              <table class="table">
+          
+              <table class="display" id="filter_table" width = "100%">
                   <thead>
                       <tr>
-                          <th scope="col">#</th>
+                        
                           <th scope="col">Order Id</th>
                           <th scope="col">User</th>
                           <th scope="col">Payment Mode</th>
@@ -38,10 +39,12 @@
                   <tbody>
                     {% for obj in filter.qs %}
                       <tr>
-                          <th scope="row"></th>
-                          <th scope="row">{{obj.order_number}}</th>
-                          <th scope="row">{{obj.first_name}}</th>
-                          <td>{{obj.payment}} </td>
+                         
+                         <td>{{obj.order_number}}</td>
+                      
+                          <td>{{obj.first_name}}</td>
+                       
+                          <td>{{obj.payment.payment_method}} </td>
                           <td> {{obj.status}}</td>
                           <td>{{obj.state}}</td>
                           <td>{{obj.product_price}}</td>
@@ -54,12 +57,14 @@
                    </tbody>
                   
                </table>
+
            </div>
        </div>
    </div>
 
-
+   
 
   </div>
 </div>
+
 {% endblock%}

@@ -22,7 +22,7 @@
                    <table class="table">
                        <thead>
                            <tr>
-                               <th scope="col">#</th>
+                              
                                <th scope="col">Order Id</th>
                                <th scope="col">User</th>
                                <th scope="col">Payment Mode</th>
@@ -36,10 +36,10 @@
                        {% for txn in orders%}
                        <tbody>
                            <tr>
-                               <th scope="row">{{txn.order.order_number}}</th>
+                              
                                <th scope="row">{{txn.order.order_number}}</th>
                                <th scope="row">{{txn.user}}</th>
-                               <td> COD </td>
+                               <td>{{txn.payment.payment_method}}</td>
                                <td> {{txn.order.status}}</td>
                                <td>{{txn.order.state}}</td>
                                <td>{{txn.product_price}}</td>

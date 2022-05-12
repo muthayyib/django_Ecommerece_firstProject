@@ -8,10 +8,10 @@ class CategoryOffer(models.Model):
     # now = datetime.date.today()
 
     category = models.OneToOneField(Category,related_name='cat_offer',on_delete=models.CASCADE)
-    discount = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(50)])
-    valid_from = models.DateField()
-    valid_to = models.DateField()
-    active = models.BooleanField(blank=True,null=True)
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+    discount = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)])
+    active = models.BooleanField()
 
     def __str__(self):
         return self.category.category_name

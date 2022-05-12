@@ -1,10 +1,14 @@
-{% extends 'admin_panel/base_admin.html'%} {% block content%}
-<form action="{% url 'edit_cat_offer' offer.id %}" method="POST" class="col-lg-6">
-  {% csrf_token %}
-  <div class="form-control row " width='1rem'>
-    {{form}}
-  </div>
-  <button type="submit" class="btn btn-warning" >save</button>
-</form>
 
+
+
+{% extends 'admin_panel/base_admin.html'%} {% block content%}
+{% load crispy_forms_tags %}
+<form action="{% url 'edit_cat_offer' offer.id%}" method="POST" class="col-lg-6 uniForm" style="padding:2rem;margin:auto;">
+  {% csrf_token %}
+  <div class="form-control row " style="padding:1rem;background-color:#F3F6F9;" width='2rem'>
+    {{form|crispy}}
+  </div>
+  <button class='btn_1' style="margin-left:87%; margin-top:1rem;" type="submit" >Save</button>
+</form>
 {% endblock%}
+

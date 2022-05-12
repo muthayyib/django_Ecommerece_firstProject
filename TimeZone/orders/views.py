@@ -151,6 +151,9 @@ def razor_success(request):
     payment.amount_paid = order.order_total
     payment.status = "Completed"
     payment.save()
+
+    order.payment=payment
+    order.save()
             
     cart_item = CartItem.objects.filter(user=current_user)
     
@@ -234,6 +237,7 @@ def razor_success(request):
 def cash_on_delivery(request,order_number):
     current_user = request.user
     order= Order.objects.get(order_number=order_number)
+    
 
     #transaction details store
     payment = Payment()
@@ -244,7 +248,8 @@ def cash_on_delivery(request,order_number):
     payment.status = 'Pending'
     payment.save()
     
-
+    order.payment=payment
+    order.save()
     cart_item = CartItem.objects.filter(user=current_user)
     
     
@@ -312,6 +317,8 @@ def paypal_complete(request):
     payment.status = body['status']
     payment.save()
 
+    
+
     #create payment details and order product table
     
     cart_item = CartItem.objects.filter(user=current_user)
@@ -320,6 +327,9 @@ def paypal_complete(request):
     #taking order_id to show the invoice
     request.session['order_id']=order_id
     order_data = Order.objects.get(order_number = order_id)
+
+    order_data.payment=payment
+    order_data.save()
     
     for item in cart_item:
         

@@ -16,9 +16,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     is_available = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False, help_text="0=default, 1=Hidden")
-    trending = models.BooleanField(default=False, help_text="0=default, 1=Trending")
-    tag = models.CharField(max_length=50,blank=True)
+    
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

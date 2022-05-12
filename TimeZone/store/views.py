@@ -33,7 +33,7 @@ def store(request):
 
 # product view based on category 
 def collections(request):
-    category = Category.objects.filter(status=0)
+    category = Category.objects.all()
     print(category)
     context = {
         'category':category
@@ -42,7 +42,7 @@ def collections(request):
 
 #collections viewy
 def collectionsview(request,category_slug):
-    if(Category.objects.filter(category_slug=category_slug,status=0)):
+    if(Category.objects.filter(category_slug=category_slug)):
         product = Product.objects.filter(category__category_slug=category_slug)
         category = Category.objects.filter(category_slug=category_slug).first()
         context  ={
@@ -55,9 +55,9 @@ def collectionsview(request,category_slug):
 
 #product deatiled view for user
 def productDetails(request,cat_slug,prod_slug):
-    if(Category.objects.filter(category_slug=cat_slug,status=0)):
-        if(Product.objects.filter(product_slug=prod_slug,status=0)):
-            product = Product.objects.filter(product_slug=prod_slug,status=0).first()
+    if(Category.objects.filter(category_slug=cat_slug)):
+        if(Product.objects.filter(product_slug=prod_slug)):
+            product = Product.objects.filter(product_slug=prod_slug).first()
             context = {'product':product}
     
         else:

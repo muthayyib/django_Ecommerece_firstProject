@@ -1,9 +1,14 @@
+
+
 {% extends 'admin_panel/base_admin.html'%} {% block content%}
-<form action="{% url 'add_coupon'%}" method="POST" class="col-lg-6">
+{% load crispy_forms_tags %}
+<form action="{% url 'add_coupon'%}" method="POST" class="col-lg-6 uniForm" style="padding:2rem;margin:auto; " >
   {% csrf_token %}
-  <div class="form-control row " width='1rem'>
-    {{ form.as_p }}
+  <h3>Add coupon</h3>
+  <div class="form-control row " style="padding:1rem;background-color:#F3F6F9;" width='2rem'>
+   
+    {{form|crispy}}
   </div>
-  <button type="submit" >save</button>
+  <button class='btn_1' style="margin-left:87%; margin-top:1rem;" type="submit" >Save</button>
 </form>
 {% endblock%}

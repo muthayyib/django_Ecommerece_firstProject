@@ -346,7 +346,7 @@ def add_cat_offer(request):
     form = CategoryOfferForm(request.POST)
     if form.is_valid():
         form.save()
-        messages.info(request,'Category added successfully')
+        messages.info(request,'Category offer added successfully')
         return redirect(offer_view)
     context ={
         'form':form
@@ -355,6 +355,7 @@ def add_cat_offer(request):
 #add product offer
 def add_pro_offer(request):
     form = ProductOfferForm(request.POST)
+    print("hello pro offer                  llllllllllllllllllllllllllllllllllllllllllllllllllllll")
     if form.is_valid():
         form.save()
         messages.info(request,'Product offer added successfully')
@@ -416,10 +417,12 @@ def order_filter(request):
         orders = Order.objects.all()
         
         filters = OrderFilter(request.GET, queryset=Order.objects.all()).qs
+        filters_p = OrderFilter(request.GET, queryset=OrderProduct.objects.all()).qs
         for filter in filters:
             context ={
                 
                 'filter':filter,
+                'filters_p':filters_p
             }
     
             

@@ -1,17 +1,18 @@
 {% extends 'admin_panel/base_admin.html'%} {% block content%}
+{% load crispy_forms_tags %}
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css">
 </head>
 <div class="container">
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-8">
       <div id="alert-box"></div>
       <div id="image-box" class="mb-3" ></div>
-<form action="{% url 'edit_product' product.id %}" id="image-form" method="POST" enctype="multipart/form-data">
+<form style="margin-left:2rem;background-color:#F3F6F9;padding:1rem;" class="uniForm" action="{% url 'edit_product' product.id %}" id="image-form" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  <div class="form-control row " width='1rem'>
-    {{form}}
-  </div>
+  <div class="form-control row " style="padding:1rem;background-color:#F3F6F9;" width='2rem'>
+    {{form|crispy}}
+
   <button type="submit" class="btn btn-warning" id="confirm-btn">save</button>
 </form>
 </div>

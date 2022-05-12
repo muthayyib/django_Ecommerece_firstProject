@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'orders',
     'mathfilters',
     'django_filters',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE =  'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -157,3 +159,6 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
+
+
+CRISPY_TEMPLATE_PACK = 'uni_form'

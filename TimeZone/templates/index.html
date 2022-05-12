@@ -62,56 +62,54 @@
             </div>
         </div>
         <!-- slider Area End-->
-        <!-- ? New Product Start -->
-        <section class="new-product-area pt-5 mt-5">
-            <div class="container">
-                <!-- Section tittle -->
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="section-tittle mb-70">
-                            <h2>New Arrivals</h2>
+        
+         <!-- ? New Product Start -->
+ <div class="popular-items section-padding30">
+    <div class="container">
+        <!-- Section tittle -->
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-10">
+                <div class="section-tittle mb-70 text-center">
+                    <h2>New Arrivals</h2>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+            {% for product in products %}
+            
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                <div class="single-popular-items mb-50 text-center">
+                    <div class="popular-img">
+                        <img src="{{product.images.url}}" alt="">
+                        <div class="img-cap">
+                            {% if product.stock > 0 %}
+                                <a href='{% url 'add_cart' product.id%}'><span>Add to cart</span></a>
+                                    {% endif%}
+                        </div>
+                        <div class="favorit-items">
+                            <span class="flaticon-heart"></span>
                         </div>
                     </div>
-                </div>
-                
-                    <div class="row" > 
-                        {% for product in products %}
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"><a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
-                            {% if product.pro_offer%}
-                                <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{product.pro_offer.discount}}% off</span>
-                                        
-                            {% endif%}
-                            <div class="single-new-pro text-center">
-                                <div class="product-img p-4">
-                                    <img src="{{product.images.url}}" height='210px' class ='w-100'  alt="">
-                                </div>
-                            </div>
-                            <div class="product-caption">
-                                <h3><a href="product_details.html">{{product.product_name}}</a></h3>
-                            </div>
-                                
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                {% if product.pro_offer%}
-                                    <h5>₹  {{product.pro_offer.discount|mul:product.price|div:100|sub:product.price|abs}}</h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
-                                    {% else %}
-                          
-                           
-                          
-                           <h5>₹ {{product.price}}</h5>
-                            </div>
-                           {% endif%}
-                           
+                    <div class="popular-caption">
                         
-                        </div>
-                    {% endfor %}
-                
+                        <h3><a href="{% url 'product_details' product.category.category_slug product.product_slug%}">{{product.product_name}}</a></h3>
+                        {% if product.pro_offer%}
+                        <span>$ {{product.pro_offer.discount|mul:product.price|div:100|sub:product.price|abs}}</span><h6 class="text-muted ml-2"><del>$ {{product.price}}</del></h6>
+                        {% endif%}
+                    </div>
+                </div>
             </div>
-        </section>
-        <!--  New Product End -->
-      
+           
+            {% endfor %}
+           
+        </div>
+        
+    </div>
+</div>
 
-
-
+<!--  New Product End -->
 
 
 
@@ -149,8 +147,8 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">{{product.product_name}}</a></h3>
-                                <span>$ 45,743</span>
+                                <h3><a href="{% url 'product_details' product.category.category_slug product.product_slug%}">{{product.product_name}}</a></h3>
+                                <span>$ {{product.price}}</span>
                             </div>
                         </div>
                     </div>
