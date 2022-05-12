@@ -10,34 +10,55 @@
  
 
   
-  <button ><a href="?pdf='pdf'">jjjjjjjjjjjj</a>Search</button>
+  <button >Search</button>
 </form>
 </div>
-<div class="row">
-  <div class="col-lg-2">
-   
-  </div>
-</div>
-<div class="col-lg-8">
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th></th>
-        <th>name</th>
-        <th>prod</th>
-      </tr>
-      {% for obj in filter.qs %}
-      <tr>
-        <td>{{obj.order_number}}</td>
-       <td></td>
-        <td>{{obj.first_name}}</td>
-        <td>{{obj.first_name}}</td>
-      </tr>
-      {% endfor %}
-    </thead>
-  </table>
-</div>
+
+
+  <div class="col-8">
+      <div class="bg-light rounded h-100 p-4">
+       
+        <a href="?pdf='pdf'">pdf</a>
+          <div class="table-responsive">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Order Id</th>
+                          <th scope="col">User</th>
+                          <th scope="col">Payment Mode</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">State</th>
+                          <th scope="col">Total price</th>
+                          <th scope="col">created at</th>
+                        
+                      </tr>
+                  </thead>
+                  
+                  <tbody>
+                    {% for obj in filter.qs %}
+                      <tr>
+                          <th scope="row"></th>
+                          <th scope="row">{{obj.order_number}}</th>
+                          <th scope="row">{{obj.first_name}}</th>
+                          <td>{{obj.payment}} </td>
+                          <td> {{obj.status}}</td>
+                          <td>{{obj.state}}</td>
+                          <td>{{obj.product_price}}</td>
+                          <td>{{obj.created_at}}</td>
+                          
+                          
+
+                       </tr>
+                       {% endfor %}
+                   </tbody>
+                  
+               </table>
+           </div>
+       </div>
+   </div>
+
+
 
   </div>
 </div>

@@ -43,7 +43,7 @@
                                <td> {{txn.order.status}}</td>
                                <td>{{txn.order.state}}</td>
                                <td>{{txn.product_price}}</td>
-                               <td><a href="{% url 'change_status' txn.order.id %} ">edit<i class="fas fa-edit"></i></a></td>
+                               <td><a href="{% url 'change_status' txn.order.order_number %} ">edit<i class="fas fa-edit"></i></a></td>
                                <td><a href="{% url 'order_cancel' txn.order.order_number %}">cancel<i class="fas fa-delete"></i></a></td>
 
                             </tr>

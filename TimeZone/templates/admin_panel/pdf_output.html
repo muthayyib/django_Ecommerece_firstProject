@@ -23,6 +23,7 @@
     <h4>Orders</h4>
     <table class="table">
         <thead class="thead">
+            
             <tr>
                 <th>Id</th>
                 <th>First Name</th>
@@ -37,9 +38,9 @@
                 <td>{{i.zip}}</td>
             </tr>
             {% endfor%} {% endcomment %}
-            {% for set in filter_set %}
-                {{set.first_name}}
-            {% endfor %}
+            
+                {{filter.status}}
+         
         </tbody>
     </table>
 </body>

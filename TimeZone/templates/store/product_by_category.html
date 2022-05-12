@@ -2,7 +2,7 @@
 {%load static%}
 {%block content%}
 {% load mathfilters%}
-<div class="py-3 bg-primary">
+<div class="py-3" style="background-color: #D53203;">
     <div class="container">
         <a href="{% url 'home' %}" class="text-white">Home/</a>
         <a href="{% url 'collections' %}" class="text-white">Collections/</a>
@@ -23,9 +23,9 @@
                             
                            
                             {% if item.pro_offer%}
-                                    <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{item.pro_offer.discount}}% off</span>
+                                    <span class="span p-2" style="background-color: rgb(4, 158, 4); position: absolute;">{{item.pro_offer.discount}}% off</span>
                             {% elif item.category.cat_offer%}
-                                    <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{item.category.cat_offer.discount}}% off</span>
+                                    <span class="span p-2" style="background-color: rgb(4, 158, 4); position: absolute;">{{item.category.cat_offer.discount}}% off</span>
                             {% endif%}
                                       
                             <div class="category-image">
@@ -43,8 +43,8 @@
                             <h5>₹  {{item.category.cat_offer.discount|mul:item.price|div:100|sub:item.price|abs}}</h5><h6 class="text-muted ml-2"><del>₹ {{item.price}}00</del></h6>
                            </div>
                            {% else %}
-                           <div class="d-flex align-items-center justify-content-center mt-2"></div>
-                           <h5>₹ {{item.price}}</h5>
+                           <div class="d-flex align-items-center justify-content-center mt-2"> <h5>₹ {{item.price}}</h5> </div>
+                          
                         </div>
                            {% endif %}
                         </div></a>

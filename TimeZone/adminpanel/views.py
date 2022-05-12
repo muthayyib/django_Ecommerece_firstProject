@@ -407,16 +407,22 @@ def delete_coupon(request,id):
 #reports admin side
 def order_filter(request):
     filter = OrderFilter(request.GET, queryset=Order.objects.all())
-    filter_set = OrderFilter(request.GET, queryset=Order.objects.all()).qs
+    filters = OrderFilter(request.GET, queryset=Order.objects.filter()).qs
     pdf = request.GET.get('pdf')
     if pdf:
         response = HttpResponse(content_type='applications/pdf')
         response['Content-Disposition']='attachement; inline; filename=Expenses' + str(datetime.now())+'.pdf'
         response['Content-Transfer-Encoding']='binary'
         orders = Order.objects.all()
-        context ={
-            'filter_set':filter_set,
-        }
+        
+        filters = OrderFilter(request.GET, queryset=Order.objects.all()).qs
+        for filter in filters:
+            context ={
+                
+                'filter':filter,
+            }
+    
+            
         html_string = render_to_string('admin_panel/pdf_output.html',context)
         html = HTML(string=html_string)
         result = html.write_pdf()

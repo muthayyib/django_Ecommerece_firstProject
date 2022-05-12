@@ -5,15 +5,14 @@
 <div class="container p-3">
     <div class="row">
         <div class="col-lg-4">
-            <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 22rem;">
               
                 <div class="card-body">
-                  <h5 class="card-title">shipping address</h5>
+                  <h4 class="card-title">Shipping Address</h4>
               
-                  <p class="card-text">
+                  <p class="card-text" style="font-size: 1rem;">
                     {{ord.first_name}}  {{ord.last_name}} <br>
-                   
-                      {{orders.order.address_line1}} <br> 
+                      {{ord.address_line1}} <br> 
                     {{ord.city}} <br>
                     {{ord.state}} <br>
                     {{ord.country}} <br>
@@ -25,12 +24,17 @@
         </div>
             <div class="col-lg-8 p-4">
             <table class="table">
-                <h3>Order Number: {{ord.order_number}}</h3>
+               
+                <!-- <h5>Order Number: {{ord.order_number}}</h5> -->
+                <button style="margin-bottom: 15px;margin-left:80%;"  type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ord-{{ord.order_number}}">
+                    Track Order
+                  </button>
                 <thead>
-                    <tr>
+                    <tr style="font-size: 1.2rem; text-align: center;">
                       
                         <th>Image</th>
                         <th>Product name</th>
+                        <th>Order Number</th>
                         <th>Quantity</th>
                         <th>Status</th>
                        
@@ -38,12 +42,13 @@
                 </thead>
                 <tbody>
                     {% for orders in orders%}
-                    <tr>
+                    <tr style="text-align: center;">
                         <!-- <td>{{ord.order_number}}</td> -->
                     
                         
-                        <td><img src="{{orders.product.images.url}}" alt="" height="25rem"></td>
+                        <td><img src="{{orders.product.images.url}}" alt="" height="45rem"></td>
                         <td>{{orders.product.product_name}}</td>
+                        <td>{{ord.order_number}}</td>
                         <td>{{orders.quantity}}</td>
                        
                         <td>{{ord.status}}</td>
@@ -56,14 +61,12 @@
                
             </table>
             {% if ord.status != 'Cancelled'%}
-            <a href="{% url 'order_cancel_user' ord.order_number %}" class='btn-danger'>Cancell order</a>
+            <a style="text-decoration: none;margin-right: 15px;" href="{% url 'order_cancel_user' ord.order_number %}" class='btn btn-danger'>Cancel order</a>
             {% if ord.status == 'Completed'%}
-            <a href="{% url 'return_order' ord.order_number %}" class='btn-danger'>Return</a>
+            <a style="text-decoration: none;" href="{% url 'return_order' ord.order_number %}" class='btn btn-info'>Return</a>
             {% endif %}
-            <td> <!-- Button trigger modal -->
-                <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ord-{{ord.order_number}}">
-                    Track Order
-                  </button></td>
+            <!-- Button trigger modal -->
+               
 
             
             
@@ -74,7 +77,7 @@
                <div class="modal-content">
                  <div class="modal-header">
                    <h5 class="modal-title" id="exampleModalLabel">#{{ord.order_number}}</h5>
-                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                   
                  </div>
                  <div class="modal-body">
                      <div class="container">
@@ -83,28 +86,28 @@
                                 <div class="card" style="width: 18rem;">
               
                                     <div class="card-body">
-                                      <h5 class="card-title">shipping address</h5>
-                                  
-                                      <p class="card-text">
-                                        {{ord.first_name}}  {{ord.last_name}} <br>
-                                        {{orders.order.address_line1}} <br> 
-                                        {{ord.city}} <br>
-                                        {{ord.state}} <br>
-                                        {{ord.country}} <br>
-                                        {{ord.zip}}</p>
+                                        <h4 class="card-title">Shipping Address</h4>
                                     
-                                    </div>
+                                        <p class="card-text" style="font-size: 1rem;">
+                                          {{ord.first_name}}  {{ord.last_name}} <br>
+                                            {{ord.address_line1}} <br> 
+                                          {{ord.city}} <br>
+                                          {{ord.state}} <br>
+                                          {{ord.country}} <br>
+                                          {{ord.zip}}</p>
+                                      
+                                      </div>
                     
                                 </div>
                              </div>
                         
                 <div class="col-lg-6">
                     {% for orders in orders%}
-                     <div class="card">
+                     <div style="margin-left: 20%;" class="card">
                         <div class="card-body">
                           
                             
-                                <div> <img src="{{orders.product.images.url}}    " alt="" height="30rem"> </div>
+                                <div> <img src="{{orders.product.images.url}}    " alt="" height="45rem" style="margin-bottom: 10px;"> </div>
                                 <h5>{{orders.product.product_name}}      </h5>
                                 <span> Quantity: {{orders.quantity}}</span>
                                 <br>
@@ -118,11 +121,11 @@
         </div>
                 
                      {% if ord.status == 'New'%}
-                    <p>Pending</p>
+                    <p style="margin-left:85%; font-size: 1.3rem; color: rgb(221, 55, 33);">Pending</p>
                     {% elif ord.status == 'Accepted'%}
-                    <p>Shipped On the way</p>
+                    <p style="margin-left:85%; font-size: 1.3rem; color: rgb(22, 120, 211);">Shipped On the way</p>
                     {% elif ord.status == 'Completed'%}
-                    <p>Delivered</p>
+                    <p style="margin-left:85%; font-size: 1.3rem; color: green;">Delivered</p>
                     {% endif %}
                     <div class="progress">
                         {% if ord.status == 'New'%}

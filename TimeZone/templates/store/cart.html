@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 {% load mathfilters%}
  <!--================Cart Area =================-->
  {% if not cart_items%}
+ <div style="width:100%;"><img style="margin-left:auto; margin-right:auto;" src="{% static 'img/gif/addtocart.gif' %}" alt=""></div>
 <h2>Your shopping cart is empty</h2>
 <br>
 <div class="text-center">

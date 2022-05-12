@@ -2,10 +2,10 @@
 {%block content%}      
         
         <!--================login_part Area =================-->
-        <section class="login_part ">
+        <section class="login_par ">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-6 col-md-6 ">
                         <div class="login_part_text text-center">
                             <div class="login_part_text_iner">
                                 <h2>New to our Shop?</h2>
@@ -42,16 +42,17 @@
                                             
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <div class="creat_account d-flex align-items-center">
+                                        <div class=" align-items-center ">
                                             
                                           
-                                            <a class="lost_pass" href="{% url 'login_otp' %}"> or Login with otp</a>
-                                        </div>
-                                        <button type="submit" value="submit" class="btn_3">
+                                            
+                                        
+                                        <button  type="submit" value="submit" class="btn_1">
                                             log in
-                                        </button>
-                                        <a class="lost_pass" href="#">forget password?</a>
-
+                                        </button></div>
+                                        <a class="lost_pass text-dark btn_2" href="#">forget password?</a>
+                                        <a class="lost_pass text-dark btn_2" href="{% url 'login_otp' %}"> or Login with otp</a>
+                                    
                                     </div>
                                 </form>
                             </div>

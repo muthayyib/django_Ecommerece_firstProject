@@ -54,4 +54,4 @@ class OrderFilter(django_filters.FilterSet):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['first_name','city','status', 'created_at']

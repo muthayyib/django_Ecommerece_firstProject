@@ -173,7 +173,7 @@
   </script>
 
 
-  <a href="{% url 'cash_on_delivery' %}" class="btn btn_1 mt-3" style="padding:17px 35px" >Cash on delivery</a>
+  <a href="{% url 'cash_on_delivery' order_data.order_number  %}" class="btn btn_1 mt-3" style="padding:17px 35px" >Cash on delivery</a>
 
 
 
@@ -187,7 +187,7 @@
   <button class="btn btn_1 mt-3" style="padding:17px 35px" id="rzp-button1">Pay with Razorpay</button>
 
 
-      <form  method="POST">
+      <form href={% url 'razor_success'%} method="POST">
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <script>
         var options = {

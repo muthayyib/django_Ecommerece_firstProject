@@ -149,3 +149,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RAZOR_KEY_ID='rzp_test_8cWmlnkYHYznrK'
 RAZOR_KEY_SECRET = '7hOFVJSDn4Po1wyGPARzH9o6'
+
+
+
+#to secure cookie in razor payment
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'

@@ -22,10 +22,10 @@
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
                                 <div class="hero__caption">
                                     <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
+                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">With TimeCart</p>
                                     <!-- Hero-btn -->
                                     <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="industries.html" class="btn hero-btn">Shop Now</a>
+                                        <a href="{% url 'store'%}" class="btn hero-btn">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,10 +44,10 @@
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
                                 <div class="hero__caption">
                                     <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
+                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">With TimeCart</p>
                                     <!-- Hero-btn -->
                                     <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="industries.html" class="btn hero-btn">Shop Now</a>
+                                        <a href="{% url 'store'%}" class="btn hero-btn">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
         </div>
         <!-- slider Area End-->
         <!-- ? New Product Start -->
-        <section class="new-product-area section-padding30">
+        <section class="new-product-area pt-5 mt-5">
             <div class="container">
                 <!-- Section tittle -->
                 <div class="row">
@@ -73,73 +73,42 @@
                         </div>
                     </div>
                 </div>
-                    <div class="row"> 
+                
+                    <div class="row" > 
                         {% for product in products %}
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 border m-3"><a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"><a href=" {% url 'product_details' product.category.category_slug product.product_slug%}">
                             {% if product.pro_offer%}
                                 <span class="span p-2" style="background-color: rgb(4, 158, 4);">{{product.pro_offer.discount}}% off</span>
                                         
                             {% endif%}
                             <div class="single-new-pro text-center">
                                 <div class="product-img p-4">
-                                    <img src="{{product.images.url}}" height='230px' class ='w-100'  alt="">
+                                    <img src="{{product.images.url}}" height='210px' class ='w-100'  alt="">
+                                </div>
                             </div>
                             <div class="product-caption">
                                 <h3><a href="product_details.html">{{product.product_name}}</a></h3>
-                                {% if product.pro_offer%}
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                
-                                    <h5>₹  {{product.pro_offer.discount|mul:product.price|div:100|sub:product.price|abs}}</h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
-                            
-                           </div>
-                           {% else %}
-                           <div class="d-flex align-items-center justify-content-center mt-2"></div>
-                           <h5>₹ {{product.price}}</h5>
-                        </div>
-                           {% endif%}
                             </div>
+                                
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                {% if product.pro_offer%}
+                                    <h5>₹  {{product.pro_offer.discount|mul:product.price|div:100|sub:product.price|abs}}</h5><h6 class="text-muted ml-2"><del>₹ {{product.price}}</del></h6>
+                                    {% else %}
+                          
+                           
+                          
+                           <h5>₹ {{product.price}}</h5>
+                            </div>
+                           {% endif%}
+                           
+                        
                         </div>
-                    </div>
                     {% endfor %}
-                </div>
+                
             </div>
         </section>
         <!--  New Product End -->
-        <!--? Gallery Area Start -->
-        <div class="gallery-area">
-            <div class="container-fluid p-0 fix">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery1.png' %}"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url({% static 'img/gallery/gallery2.png' %}"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-12">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
-                                <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery3.png' %}"></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-12 col-lg-12  col-md-6 col-sm-6">
-                                <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url({% static 'img/gallery/gallery4.png' %}"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-
+      
 
 
 
@@ -159,13 +128,15 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8 col-md-10">
                         <div class="section-tittle mb-70 text-center">
-                            <h2>Popular Items</h2>
-                            <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                            <h2>Offers</h2>
+                            
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    
                     {% for product in products %}
+                    {% if product.pro_offer %}
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-popular-items mb-50 text-center">
                             <div class="popular-img">
@@ -183,70 +154,23 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     {% endfor %}
+                   
                 </div>
                 <!-- Button -->
                 <div class="row justify-content-center">
                     <div class="room-btn pt-70">
-                        <a href="catagori.html" class="btn view-btn1">View More Products</a>
+                        <a href="{% url 'store'%}" class="btn view-btn1">View More Products</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Popular Items End -->
         <!--? Video Area Start -->
-        <div class="video-area">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-lg-12">
-                    <div class="video-wrap">
-                        <div class="play-btn "><a class="popup-video" href="https://www.youtube.com/watch?v=KMc6DyEJp04"><i class="fas fa-play"></i></a></div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Arrow -->
-                <div class="thumb-content-box">
-                    <div class="thumb-content">
-                        <h3>Next Video</h3>
-                        <a href="#"> <i class="flaticon-arrow"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  </div>
         <!-- Video Area End -->
-        <!--? Watch Choice  Start-->
-        <div class="watch-area section-padding30">
-            <div class="container">
-                <div class="row align-items-center justify-content-between padding-130">
-                    <div class="col-lg-5 col-md-6">
-                        <div class="watch-details mb-40">
-                            <h2>Watch of Choice</h2>
-                            <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="store.html" class="btn">Show Watches</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="choice-watch-img mb-40">
-                            <img src="{% static 'img/gallery/choce_watch1.png' %}" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-between">
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="choice-watch-img mb-40">
-                            <img src="{% static 'img/gallery/choce_watch2.png' %}" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-5 col-md-6">
-                        <div class="watch-details mb-40">
-                            <h2>Watch of Choice</h2>
-                            <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="store.html" class="btn">Show Watches</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+ 
         <!-- Watch Choice  End-->
         <!--? Shop Method Start-->
         <div class="shop-method-area">
@@ -257,21 +181,20 @@
                             <div class="single-method mb-40">
                                 <i class="ti-package"></i>
                                 <h6>Free Shipping Method</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                               
                             </div>
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-6">
                             <div class="single-method mb-40">
                                 <i class="ti-unlock"></i>
                                 <h6>Secure Payment System</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
                             </div>
                         </div> 
                         <div class="col-xl-4 col-lg-4 col-md-6">
                             <div class="single-method mb-40">
                                 <i class="ti-reload"></i>
-                                <h6>Secure Payment System</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                                <h6>Fast Delivery</h6>
+                             
                             </div>
                         </div>
                     </div>
